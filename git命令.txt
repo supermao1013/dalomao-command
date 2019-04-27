@@ -1,0 +1,164 @@
+git官网：https://git-scm.com/
+
+1.配置全局账号
+git config --global user.name "你的用户名"
+git config --global user.email "你的邮箱"
+
+2.创建全局用户名密码文件
+ 打开git-base
+
+cd $HOME
+
+touch .git-credentials
+
+vim .git-credentials
+
+输入：https://{username}:{password}@{gitUrl}
+如：https://maohw:MAOmao1013@192.168.1.1      或     https://maohw:MAOmao1013@github.com
+
+git config --global credential.helper store
+
+3.Windows平台使用回车和换行两个字符来结束一行，而MAC和Linux只使用换行一个字符。
+（1）若为跨平台协作开发，保持仓库中的代码为LF结束符
+	a.Windows在提交代码时自动把结束符CRLF转换成LF，在签出代码时把LF转成CRLF，因此设置成：git config --global core.autocrlf true
+	b.MAC或Linux在提交代码时，若不小心某文件以CRLF结尾，则可以设置成input告诉git在提交时把CRLF转换成LF，签出代码时不转换：git config --global core.autocrlf input
+（2）如果不存在跨平台开发，且都在Windows上开发，则可以设置成false进行取消，把回车符记录在库中：git config --global core.autocrlf false 
+
+
+2.常用操作
+
+工作区（项目所在文件夹）——>暂存区（git add)-->本地仓库分支(git commit)-->远程仓库分支（push）
+git init： 初始化git项目，可以新建一个空文件进行初始化
+git add <filename>： 修改或新增文件后必须执行本地add操作，filename允许多个，空格隔开--->提交文件到暂存区
+git add .  #提交当前目录下所有修改和新建的文件，但不包括被删除的文件
+git add -u  #更新所有改变的文件
+git add -A  #提交已被修改和已被删除文件，但是不包括新的文件
+git commit -m "消息"： 执行add变更后必须执行本地提交，可以将之前add的所有文件提交--->将暂存区的所有文件提交到仓库
+git commit -a -m "消息":提交所有已加入到源控制的文件
+git status：本地仓库当前的状态
+git log <--pretty=oneline>：查看提交日志
+git log --graph --pretty=oneline --abbrev-commit：以图表形式查看日志
+git diff <filename>：查看当前修改的文件和仓库中的差异
+git fetch：和git pull类似，更新代码，git fetch会同步将新增的分支更新下来
+
+版本回退（只适用于本地仓库提交的回退，若push到远程仓库，那就没救了）
+git reset --hard HEAD^：(HEAD表示当前版本) HEAD^表示再上前一个版本，HEAD^^表示上上个版本，HEAD~1或HEAD~100表示上N个版本
+git reset --hard 3628164：(表示还原到指定版本)
+git reflog：查询每一次操作命令，当然也可以查出回退前的版本信息，如果回退后后悔了想返回原来版本，可使用此命令查看原来的commit id
+git reset HEAD <filename>：撤销暂存区的所有修改，回到工作区（适用于进行add操作后的情况）
+git checkout -- <filename>：撤销工作区的所有修改，回到和版本库一致的信息（适用于还没有进行add操作的情况）
+【回退远程仓库】
+先回退本地分支：git reset --hard 3628164
+然后强制推送到远程分支：git push -f
+
+删除文件：
+git rm <filename>：删除文件，删除后还要执行一次commit操作
+git checkout -- <filename>：误删除文件，恢复，其实checkout命令就是用版本库里的版本替换工作区的版本，无论是修改还是删除，都可以一键还原
+
+本地仓库和远程仓库：
+git remote add origin https://github.com/tutorialzine/awesome-project.git 将本地目录与远程目录建立关联(远程仓库默认分支名称origin)
+git clone https://github.com/tutorialzine/awesome-project.git 克隆一份远程git项目到本地目录 
+git push -u origin master：第一次推送本地master分支到远程仓库，-u会强制远程仓库也创建一个master分支
+git push origin master：push master分支到远程仓库
+git push origin <分支名>：将本地仓库指定分支的数据提交到远程git服务器
+git remote -v：查看远程仓库的信息
+git pull：拉取远程仓库数据到本地
+
+分支管理：
+HEAD的指向表示你当前处于哪个分支上
+git branch <name>：在本地创建分支
+git checkout <name>：切换分支
+git checkout -b <name>：本地创建+切换分支
+git checkout -b <name> origin/<name>：同时在本地和远程创建一个分支并关联起来，并且本地切换到该分支
+git branch：查看分支
+git branch -d <name>：删除本地分支
+git branch -D <name>：强制删除本地分支
+git merge dev：将dev分支代码合并到当前分支，注意必须先切换到当前分支，执行后处于commit状态，若要同步到远程仓库需要自行push。Fast forward形式的合并，若删除dev分支后git log是看不到dev的合并历史
+git merge --on-off dev：禁用Fast forward模式的合并，删除dev分支后，用git log是可以看到dev的合并历史
+git stash：保存工作现场，即保存暂存区的修改（add操作后的现场），这个时候用git status会发现分支没有任何修改。适用于临时去别的分支处理其他问题，如处理bug等场景。注意如果commit后的是不需要保存现场的，如果还未add之前的代码也是无法保存现场的，必须处于暂存区的代码才可以保存线程
+git stash list：查看保存起来的工作现场
+git stash apply：恢复工作现场，但是stash内容未删除，即使用git stash list仍然可以看到记录
+git stash drop：删除stash内容
+git stash pop：恢复工作现场+删除stash内容
+
+tag标签：
+git tag -l：查看标签列表
+git tag V1.0：打标签V1.0，注意这种打标签的形式是打在当前分支最新提交的commit上的
+git tag V1.0 <commit id>：针对某次提交打tag，可以跨分支
+git tag -a V1.0 -m "comment"：创建带有说明的标签，-a指定标签名，-m指定说明文字
+git tag -s V1.2 -m "comment"：使用PGP签名打标签，-s标示用私钥签名一个标签
+git tag：查看所有标签
+git show <tagname>：查看具体标签信息
+git tag -d V1.0:删除本地tag V1.0
+git push origin <tagname>：推送某个tag到远程
+git push origin --tags：一次性将本地全部尚未推送到远程的标签进行推送
+git push origin :refs/tags/<tagname>：删除一个远程标签，注意也要把本地的一起删除git tag -d <tagname>
+
+
+github代码仓库操作：
+1.创建SSH秘钥
+cd $HOME或cd ~：进入用户主目录
+ssh-keygen -t rsa -C "youremail@example.com"：进入用户主目录，这里的邮箱是你全局设置的邮箱，本地电脑创建秘钥，一直执行下一步即可，.ssh/id_rsa是私钥，.ssh/id_rsa.pub是公钥
+然后将id_rsa.pub公钥放到github上，Settings-->SSH and GPG keys-->New SSH key--->名字随便取，公钥内容黏贴进去
+ssh -T git@github.com  #验证秘钥是否设置成功
+
+2.本地仓库和远程github关联
+git remote add origin git@github.com:supermao1013/learngit.git：将本地目录和远程仓库关联起来
+git push -u origin master
+
+3.若出现ssh connect port 22 错误，且本地已经生成了公钥和秘钥，则：
+cd ~/.ssh 
+vim config #创建config文件然后输入如下内容
+
+Host github.com
+User 476231140@qq.com
+Hostname ssh.github.com
+PreferredAuthentications publickey
+IdentityFile ~/.ssh/id_rsa
+Port 443
+
+其中，User为你的github账户
+
+
+
+扩展知识
+.gitignore：定义忽略提交git的文件列表支持通配符
+添加alias别名使命令简化
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
+git config --global alias.unstage 'reset HEAD'：配置reset HEAD别名为unstage，执行git unstage read.txt效果就是git reset HEAD read.txt
+--global：表示当前用户的git配置文件，是全局配置，放在用户主目录下的一个隐藏文件.gitconfig中
+如果不加--global则是针对当前仓库的配置，每个仓库的git配置文件放在.git/config中
+git config --list：查看git配置
+
+场景1：本地创建分支，然后推送到远程并在远程也创建一个相同的分支
+git branch <name>：在本地创建分支
+git push -u origin <name>：第一次推送本地分支到远程仓库，-u会强制远程仓库也创建一个分支
+
+场景2（常用）：本地创建分支并同时推送到远程创建一个相同分支
+git checkout -b <name> origin/<name>：同时在本地和远程创建一个分支并关联起来，并且本地切换到该分支
+
+场景3（少用）：远程有dev分支，本地有dev分支，但是没有任何关系，现在要将其关联起来
+git branch --set-upstream <name> origin/<name>
+
+场景4（常用）：多人协作的工作模式
+1、首先，可以试图用git push origin <name>推送自己的修改；
+2、如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图在本地先合并；
+3、如果合并有冲突，则解决冲突，并在本地提交；
+4、没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+
+场景5（常用）：如果在一个分支上做到一半，要临时去其他分支修复bug
+1、git add <filename>：将该分支的代码进行add到暂存区（当然也可以直接commit，这样就不需要后面的操作了）
+2、git stash：保护暂存区的工作现场
+3、切换到解决bug的分支去解决bug
+4、git stash pop：再切回来，恢复现场
+5、继续你的工作
+
+
+
+
+
+
+

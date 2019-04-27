@@ -1,0 +1,400 @@
+-----------du 命令-----------------
+du -sh   查看当前目录总共占的容量。而不单独列出各子项占用的容量
+du -lh --max-depth=1 : 查看当前目录下一级子文件和子目录占用的磁盘容量
+du -sh * | sort -n 统计当前文件夹(目录)大小，并按文件大小排序
+du -sk filename 查看指定文件大小
+
+history   #查看之前执行的所有指令，非常有用！
+
+
+----------软连接------------------
+软链接：相当于windows系统的快捷方式，删除源文件，软链接就访问不了
+ln -s 源文件或目录（真正存储的地方） 目标文件或目录（快捷方式目录）：创建软链接
+创建/var/test 引向/var/www/test 文件夹：ln –s  /var/www/test   /var/test 
+硬链接：相当于备份了文件，但是还可以和源文件内容同步，删除源文件，硬链接文件仍然有效
+
+
+----------cat 命令-------------------------
+cat -n test.log  查看文件并显示行数
+cat test.log|wc -l  查看文件总行数
+cat test.log|grep '123456' --col  查看文件，并过滤条件，--col表示高亮显示
+
+----------ls ll 查看文件命令----------------
+ls -lh：以MB单位查看文件列表
+ls -lrt：按文件修改时间升序查看文件列表
+ls -lt：按文件时间降序查看文件列表
+ls -l |grep "^-"|wc -l  #查看当前目录下文件的个数，不包括子目录
+ls -lR|grep "^-"|wc -l  #查看当前目录下文件的个数，包括子目录
+ls -lR|grep "^d"|wc -l  #查看当前目录下文件夹的个数，包括子目录
+
+
+----------日志查看和过滤命令---------------
+tail -1000 dc_collect_request_data.log   #查看最后1000行的日志变化，非实时
+tail -1000 dc_collect_request_data.log|grep SPECIAL_POP_COVER_LIMIT_SERVICE   #grep过滤作用，只看包含SPECIAL_POP_COVER_LIMIT_SERVICE的行
+
+tail -1000f dc_collect_request_data.log   #实时查看最后1000行的日志变化，-f表示实时
+tail -1000f dc_collect_request_data.log|grep SPECIAL_POP_COVER_LIMIT_SERVICE   #grep过滤作用，只看包含SPECIAL_POP_COVER_LIMIT_SERVICE的行
+
+tailf dc_collect_request_data.log   #实时查看日志变化，所有日志全部显示出来
+tailf dc_collect_request_data.log|grep SPECIAL_POP_COVER_LIMIT_SERVICE   #grep过滤作用，只看包含SPECIAL_POP_COVER_LIMIT_SERVICE的行
+
+tail -c 100 dc_collect_request_data.log  #查看最后100个字符内容
+head -c 100 dc_collect_request_data.log  #查看前100个字符内容
+
+grep -o SPECIAL_POP_COVER_LIMIT_SERVICE dc_collect_request_data.log   #-o表示只提取SPECIAL_POP_COVER_LIMIT_SERVICE的内容（而不是整行），输出到屏幕
+grep -o 'order-fix.curr_id:\([0-9]\+\)' demo.log   #grep支持正则表达式，提取order-fix.curr_id:xxx内容，输出到屏幕
+grep -c 'ERR' dc_collect_request_data.log   #输出文件dc_collect_request_data.log中查找所有包行ERR的行的数量
+grep -v 'ERROR' demo.log   #反向查找，即查找不含"ERROR"的行  
+grep -C 5 foo file 显示file文件里匹配foo字串那行以及上下5行
+grep -B 5 foo file 显示foo及前5行
+grep -A 5 foo file 显示foo及后5行
+
+cat -n demo.log|grep ERROR |grep INFO   #查询关键字的日志，显示行号
+
+zgrep -a 'ipswitch' hlb_last_cover_* | grep 'dx_fujian'    #tar.gz包的内容查看，无需解压
+
+----------sed过滤替换和sort排序----------------
+sed的所有操作会默认将结果输出屏幕，而不会修改到源文件，若要输出到文件，请使用：> /usr/local/temp/file
+/p表示打印  /d表示删除  /s表示替换
+sed 's/book/books' demo.log   #在每个输入行中, 将第一个出现的"book"替换为"books",不会修改到源文件
+sed 's/book/books/g' demo.log   #在每个输入行中，将所有"book"替换为"books"，/g表示替换每行中的所有匹配,不会修改到源文件
+sed -i 's/book/books/g' demo.log   #在每个输入行中，将所有"book"替换为"books"，/g表示替换每行中的所有匹配,-i直接修改源文件
+sed -i 's/\\//g' demo.log  #将所偶遇\符号替换为空格，-i直接修改源文件
+
+sed /^$/d demo.log   #删除所有空行
+sed 2d demo.log   #删除第2行
+sed -n '/error/p' demo.log   #只打印包含error的行
+sed 's/ *$//' demo.log   #删除掉每行结尾的所有空格
+sed 's/00*/0/g' demo.log   #将所有连续出现的0都压缩成单个0
+sed '/ERROR/d' demo.log   #删除掉所有包含"ERROR"的行
+sed 's/ERROR//g' demo.log   #将所有"ERROR"删除掉，并保持剩余部分的完整性
+
+sed -n '/^2018-02-24.*ERR/p'  dc_collect_request_data.log   #输出指定日期中的ERR日志到屏幕
+sed -n '/^2018-02-24.*ERR/p'  dc_collect_request_data.log > /usr/local/temp/error   #输出指定日期中的ERR日志到error文件
+
+筛选、按指定顺序拼接，通过@符号拼接
+sed -n 's/^\([_-\: 0-9]\{19\}\).*\(INF\|ERR\).*\(FETCH_RP_DNSMAP_VIEW_THREAD\) \(start\|end\)/\1@\2@\3@\4/p' dc_collect_request_data.log
+2018-02-18_17:50:00@INF@FETCH_RP_DNSMAP_VIEW_THREAD@end 0
+2018-02-18_17:52:00@INF@FETCH_RP_DNSMAP_VIEW_THREAD@start
+2018-02-18_17:52:00@INF@FETCH_RP_DNSMAP_VIEW_THREAD@end 0
+2018-02-18_17:54:00@INF@FETCH_RP_DNSMAP_VIEW_THREAD@start
+2018-02-18_17:54:00@INF@FETCH_RP_DNSMAP_VIEW_THREAD@end 0
+sed -n 's/^\([_-\: 0-9]\{19\}\).*\(INF\|ERR\).*FETCH_RP_DNSMAP_VIEW_THREAD \(start\|end\)/\1@\2@\3/p' dc_collect_request_data.log
+2018-02-18_01:02:00@INF@end 0
+2018-02-18_01:04:00@INF@start
+2018-02-18_01:04:00@INF@end 0
+2018-02-18_01:06:00@INF@start
+2018-02-18_01:06:00@INF@end 0
+
+sort排序，配合sed使用
+-t表示指定排位时所有的栏位分割字符，这里为@
+-k表示需要进行排位的栏位或域，这里先按日志级别排序（2栏位），然后再按时间排序（1栏位）
+-n表示按数字大小排序
+-r是以相反顺序排序
+sed -n 's/^\([_-\: 0-9]\{19\}\).*\(INF\|ERR\).*FETCH_RP_DNSMAP_VIEW_THREAD \(start\|end\)/\1@\2@\3/p' dc_collect_request_data.log | sort -t@ -k2,2r -k1,1
+
+------------awk统计--------------------------------
+以上述sort后的结果为输入，保存文件为info_error.log
+awk是会遍历文件中所有的行
+awk 'BEGIN{FS="@"} {print $1,$2}' info_error.log   #BEGIN为预处理，把@号作为行的列分隔符，把分割后的行的第1,2列输出
+2018-02-24_15:14:00 INF
+2018-02-24_15:14:00 INF
+2018-02-24_15:16:00 INF
+awk 'BEGIN{FS="@"} {if ($2 == "INF"){info_count++}} END{printf("INF count:%d\n", info_count)}' info_error.log   #统计INF出现的总行数
+netstat -ant | grep ":54104" | awk '{print $NF}' | sort | uniq -c  | sort -nr  查看端口54104,$NF表示最后一个字段,用sort命令排序,用uniq命令统计(c),最后按数值(n)倒序(r)排列
+netstat -ant | grep ":54104" | awk '/^tcp/{++S[$4]} END {for(a in S) print a,S[a]}' | sort -nr -k 2 -t ' '   查看端口号54104，/^tcp/表示以tcp开头的，统计第4列的总数
+netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'  只统计tcp开头,统计最后一行出现的总数并打印
+ifconfig | awk '/inet addr/ {print($2)}'  /inet addr/表示过滤出inet addr开头的行，print($2)表示打印过滤出的行的第2列数据
+
+------------fifo管道文件命令---------------
+mkfifo test.fifo  创建管道文件
+cat test.fifio  cat管道，当服务端向该管道写数据时，可以cat到数据，服务端写完数据后马上关闭管道，则cat进程也会马上退出。若服务端一直向管道写数据，而没有客户端cat，则会造成管道阻塞
+
+
+------------more命令--------------------------------
+more +20 test.txt    #从第20行开始显示
+more -4 test.txt    #分页显示，每页显示4行，按空格分页
+
+------------vim中搜索--------------------------------
+/xxx：表示从头开始搜索字符串xxx
+?xxx：表示从末尾开始搜索字符串xxx
+搜索到第一个后，会高亮显示所有匹配项，按n下一个，按N上一个
+
+
+---------------解压缩----------------
+tar -czf test.tar.gz *.txt   #打包以.txt结尾的文件，命名为test.tar.gz
+tar jcvf test.tar.bz2 1.txt 2.txt  #打包成tar.bz2压缩包
+tar -zxvf test.tar.gz    #解压
+tar -jxvf test.tar.gz    #解压
+tar xvf test.tgz  #解压
+zip -rq all.zip file1 file2 file3  #压缩成zip包，包括子目录的所有文件
+unzip all.zip  解压文件到当前目录
+unzip all.zip -d /usr/local/tmp  把文件解压到/usr/local/tmp目录
+
+----------定时任务------------
+定时任务日志文件：/var/log/cron
+
+crontab -e  #修改定时任务
+crontab -l：显示所有的定时任务信息
+crontab -l -u tomcat: 显示tomcat用户的定时任务信息
+tail -f /var/log/cron：实时查看所有定时任务的执行情况
+
+crond服务
+/sbin/service crond start    //启动服务
+/sbin/service crond stop     //关闭服务
+/sbin/service crond restart  //重启服务
+/sbin/service crond reload   //重新载入配置
+查看crontab服务状态：service crond status
+手动启动crontab服务：service crond start
+查看crontab服务是否已设置为开机启动，执行命令：ntsysv
+加入开机自动启动：
+chkconfig –level 35 crond on
+
+-----------服务器时间----------------
+date   #查看服务器时间
+date -d @1531952792  #时间格式化
+yum install ntpupdate   #安装时间同步插件
+ntpupdate 0.asia.pool.ntp.org  #同步北京时间
+
+--------------lsof命令---------------------
+yum install lsof：若支持该命令则需要安装
+lsof -i:6379  #查看端口使用情况
+
+--------------netstat命令---------------------
+netstat -tunlp|grep 8080    #查看端口占用情况
+netstat -plt  查看所有端口信息
+netstat -ant | head -3  显示前3条网络链接情况
+netstat -antp | grep 18374 | head -3  显示进程ID和程序名(p),然后用grep命令找出进程18374,然后用head命令显示前3行
+netstat -ant | grep ":54104" | wc -l   查看端口号为54104的链接数
+netstat -ant | grep ":54104" | awk '{print $NF}' | sort | uniq -c  | sort -nr  查看端口54104,$NF表示最后一个字段,用sort命令排序,用uniq命令统计(c),最后按数值(n)倒序(r)排列
+netstat -ant | grep ":54104" | awk '/^tcp/{++S[$4]} END {for(a in S) print a,S[a]}' | sort -nr -k 2 -t ' '   查看端口号54104，/^tcp/表示以tcp开头的，统计第4列的总数
+netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'  只统计tcp开头,统计最后一行出现的总数并打印
+
+
+--------------组、用户操作-----------------
+groupadd test   #添加组test
+cat /etc/group   #查看当前系统所有组
+chgrp test test.txt   #修改test.txt的组为test组
+useradd test -g test   #创建用户test，归属于test组
+usermod -aG docker $USER  #将用户$USER加入docker组
+passwd test 123456   #设置test用户密码为123456
+su test   #切换到test用户
+cat /etc/passwd  #查看当前系统所有用户
+userdel test   #删除用户
+id -nu tomcat：确认tomcat用户是否存在
+groups tomcat：查看tomcat用户所属的组
+chown -R tomcat:tomcat /usr/local/tomcat7  #设置/usr/local/tomcat7为tomcat组下的tomcat用户
+
+修改用户密码
+chattr -i /etc/passwd
+chattr -i /etc/shadow
+useradd test  #修改用户密码
+chattr +i /etc/passwd
+chattr +i /etc/shadow
+
+
+---------文件权限-------------
+文件或目录的权限rwxrwxrwx说明：root权限、组权限、其他用户权限
+chmod 777 test.txt  #修改文件的权限
+
+--------------------find命令--------------
+find / -name mysql  #在根目录下寻找mysql
+find /usr/local -name mysql #在/usr/local目录下寻找mysql
+find . -name "*.txt"    #在当前目录下寻找以txt结尾的文件
+
+
+----------------进程操作---------------------
+ps -ef|grep java：查看进程
+ps aux|grep java：查看进程
+chkconfig mysql on
+chkconfig mysql off
+
+whereis mysql
+
+service mysql start：启动mysql
+service mysql stop：停止mysql
+service mysql restart：重启mysql
+
+查看操作系统：lsb_release -a
+	          uname -a
+
+-----------------文件命令----------------
+touch text.txt   #创建空文件
+		  
+		  
+--------------rpm命令---------------------		  
+rpm命令：rpm软件包的安装卸载
+java -version  //查看是否安装了jdk，版本是多少
+rpm -qa  //查看已经安装的所有软件包信息
+rpm -qa |grep jdk   //查看安装的jdk软件包信息
+rpm -e xxx   //卸载软件
+rpm -ivh xxx.rpm   //安装rpm包
+
+--------------yum命令---------------------	
+yum install vim   #安装vim及其所有依赖包，安装包都是rpm包
+yum remove vim  #卸载vim及其所有依赖包
+yum源配置文件所在的文件夹：/etc/yum.repos.d/
+添加docker-ce镜像源：  yum-config-manager --add-repo https://mirrors.ustc.edu.cn/docker-ce/linux/centos/docker-ce.repo
+
+
+--------远程访问下载命令--------------------
+wget http://xxx    #远程下载文件
+curl www.baidu.com   #远程访问url，获取页面信息
+curl -O http://xxx /usr/local/temp    #远程下载文件
+
+
+
+-------------centos6防火墙-----------------------
+yum install firewalld  #安装防火墙
+service firewalld status  #查看防火墙状态
+service firewalld stop  #关闭防火墙
+
+
+--------------系统命令--------------
+lsb_release -a  #查看操作系统
+uname -a  #查看操作系统
+init 0  #关机
+init 6  #重启
+free -m   #查看内存使用情况，单位MB
+free -h
+df -h  #查看磁盘使用情况
+du -h  #查看当前目录下所有文件夹的磁盘占用情况
+lsblk  #查看当前挂载的磁盘
+fdisk -l  #查看盘符分配情况
+ifconfig   #查看IP等信息
+lscpu   #查看的是cpu的统计信息
+blue@blue-pc:~$ lscpu
+Architecture:          i686          #cpu架构
+CPU op-mode(s):        32-bit, 64-bit
+Byte Order:            Little Endian   #小尾序
+CPU(s):                4            #总共有4核
+On-line CPU(s) list:   0-3
+Thread(s) per core:    1              #每个cpu核，只能支持一个线程，即不支持超线程
+Core(s) per socket:    4               #每个cpu，有4个核
+Socket(s):             1              #总共有1一个cpu
+Vendor ID:             GenuineIntel    #cpu产商 intel
+CPU family:            6
+Model:                 42
+Stepping:              7
+CPU MHz:               1600.000
+BogoMIPS:              5986.12
+Virtualization:        VT-x             #支持cpu虚拟化技术
+L1d cache:             32K
+L1i cache:             32K
+L2 cache:              256K
+L3 cache:              6144K
+
+cat /proc/cpuinfo    #个cpu信息，如每个CPU的型号，主频等
+processor    : 0
+vendor_id    : GenuineIntel
+cpu family    : 6
+model        : 42
+model name    : Intel(R) Core(TM) i5-2320 CPU @ 3.00GHz
+.....
+上面输出的是个cpu部分信息，还有3个cpu信息省略了。
+
+top  #查看内存和CPU使用情况
+cat /proc/meminfo    #查看内存详细使用情况
+MemTotal:        4020868 kB
+MemFree:          230884 kB
+Buffers:            7600 kB
+Cached:           454772 kB
+SwapCached:          836 kB
+.....
+
+dmidecode -t memory   #查看内存硬件信息
+# dmidecode 2.11
+SMBIOS 2.7 present.
+Handle 0x0008, DMI type 16, 23 bytes
+Physical Memory Array
+    Location: System Board Or Motherboard
+....
+    Maximum Capacity: 32 GB
+....
+Handle 0x000A, DMI type 17, 34 bytes
+....
+Memory Device
+    Array Handle: 0x0008
+    Error Information Handle: Not Provided
+    Total Width: 64 bits
+    Data Width: 64 bits
+    Size: 4096 MB
+.....
+我的主板有4个槽位，只用了一个槽位，上面插了一条4096MB的内存。
+
+--------------java----------------------
+#查看jdk安装目录，要一步一步查找下去，命令如下：
+[root@localhost ~]# which java
+/usr/bin/java
+[root@localhost ~]# ls -lrt /usr/bin/java
+lrwxrwxrwx. 1 root root 22 Aug 17 15:12 /usr/bin/java -> /etc/alternatives/java
+[root@localhost ~]# ls -lrt /etc/alternatives/java
+lrwxrwxrwx. 1 root root 46 Aug 17 15:12 /etc/alternatives/java -> /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java
+[root@localhost ~]# cd /usr/lib/jvm
+[root@localhost jvm]# ls
+java-1.6.0-openjdk-1.6.0.0.x86_64 java-1.7.0-openjdk-1.7.0.65.x86_64 jre jre-1.6.0 jre-1.6.0-openjdk.x86_64 jre-1.7.0 jre-1.7.0-openjdk.x86_64 jre-openjdk
+ 
+
+-------------------Linux系统环境变量-----------------------------
+/etc/profile：系统级，该文件是用户登录时，操作系统定制用户环境时使用的第一个文件，应用于登录到系统的每一个用户。该文件一般是调用/etc/bash.bashrc文件
+/etc/environment：系统级，在登录时操作系统使用的第二个文件,系统在读取你自己的profile前,设置环境文件的环境变量
+~/.profile：用户级，每个用户都可使用该文件输入专用于自己使用的shell信息,当用户登录时,该文件仅仅执行一次。这里是推荐放置个人设置的地方
+~/.bash_profile：用户级，当存在该文件使，会优先读取该文件，若不存在则读取~/.profile文件。当~/.profile和~/.bash_profile共存时，建议修改~/.bash_profile
+
+当登入系统时候获得一个shell进程时，其读取环境设定档有三步：
+1首先读入的是全局环境变量设定档/etc/profile，然后根据其内容读取额外的设定的文档，如/etc/profile.d和/etc/inputrc
+2然后根据不同使用者帐号，去其家目录读取~/.bash_profile，如果这读取不了就读取~/.bash_login，这个也读取不了才会读取~/.profile，这三个文档设定基本上是一样的，读取有优先关系
+3然后在根据用户帐号读取~/.bashrc
+
+至于~/.profile与~/.bashrc的不区别
+都具有个性化定制功能
+~/.profile可以设定本用户专有的路径，环境变量，等，它只能登入的时候执行一次
+~/.bashrc也是某用户专有设定文档，可以设定路径，命令别名，每次shell script的执行都会使用它一次
+
+
+--------------------systemctl是CentOS7的服务管理工具中主要的工具，它融合之前service和chkconfig的功能于一体-----------
+启动一个服务：systemctl start firewalld.service
+关闭一个服务：systemctl stop firewalld.service
+重启一个服务：systemctl restart firewalld.service
+显示一个服务的状态：systemctl status firewalld.service
+在开机时启用一个服务：systemctl enable firewalld.service
+在开机时禁用一个服务：systemctl disable firewalld.service
+查看服务是否开机启动：systemctl is-enabled firewalld.service
+查看已启动的服务列表：systemctl list-unit-files|grep enabled
+查看启动失败的服务列表：systemctl --failed
+
+---------------------centos7中防火墙-----------------------
+启动： systemctl start firewalld.service
+查看状态： systemctl status firewalld.service
+关闭： systemctl stop firewalld.service
+开机禁用防火墙：systemctl disable firewalld.service
+开机启用防火墙：systemctl enable firewalld.service
+
+配置firewalld-cmd
+查看版本： firewall-cmd --version
+查看帮助： firewall-cmd --help
+显示状态： firewall-cmd --state
+查看所有打开的端口： firewall-cmd --zone=public --list-ports
+更新防火墙规则： firewall-cmd --reload
+查看区域信息:  firewall-cmd --get-active-zones
+查看指定接口所属区域： firewall-cmd --get-zone-of-interface=eth0
+拒绝所有包：firewall-cmd --panic-on
+取消拒绝状态： firewall-cmd --panic-off
+查看是否拒绝： firewall-cmd --query-panic
+
+防火墙端口管理
+添加：firewall-cmd --zone=public --add-port=80/tcp --permanent    （--permanent永久生效，没有此参数重启后失效）
+重新载入：firewall-cmd --reload
+查看：firewall-cmd --zone=public --query-port=80/tcp
+删除：firewall-cmd --zone=public --remove-port=80/tcp --permanent
+指定IP访问端口：
+firewall-cmd --permanent --add-rich-rule 'rule family=ipv4 source address=192.168.0.1/2 port port=80 protocol=tcp accept'
+firewall-cmd --reload
+删除规则：
+firewall-cmd --permanent --remove-rich-rule 'rule family=ipv4 source address=192.168.0.1/2 port port=80 protocol=tcp accept'
+firewall-cmd --reload
+查看配置结果：firewall-cmd --list-all
+
+
+
+ 

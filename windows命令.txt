@@ -1,0 +1,23 @@
+-------域名解析nslookup-------
+nslookup：显示当前系统所使用的DNS服务器地址
+nslookup -qt=ns 域名：查询域名的DNS是使用的哪家公司的DNS服务器
+nslookup -qt=cname 域名：查看域名的别名记录（CNAME记录）
+
+DNS服务器地址查询：ipconfig/all命令显示信息最后一行显示DNS SERVERS信息，这就是DNS服务器地址
+清除DNS缓存中的信息：ipconfig/flushdns
+
+
+--------netstat----------------
+netstat -aon|findstr 61147    //查看是哪一个进程ID占用该端口，然后根据进程ID通过任务管理器可以强制删除
+
+
+--------tasklist---------------
+tasklist  //查看所有进程ID
+tasklist /v | findstr java  //查看java进程ID
+
+
+
+
+
+
+

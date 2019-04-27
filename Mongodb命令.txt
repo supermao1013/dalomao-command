@@ -1,0 +1,133 @@
+Mongodb分为社区版和企业版，一般使用社区版足够满足所有场景
+
+基数版本如3.4.1属于不稳定版本，偶数版本3.4.2属于稳定版本，应该使用稳定版本
+
+mongodb提供上古的web界面（RestAPI），通过开启http访问即可：net.http.RESTInterfaceEnabled=true
+http访问端口为net.port + 1000，如net.port=27017，则web访问端口为28017，则访问地址为：http://192.168.31.41:28017/
+
+单机安装参考：https://docs.mongodb.com/v3.4/tutorial/install-mongodb-on-red-hat/
+服务端配置文件参考：https://docs.mongodb.com/v3.4/reference/configuration-options/
+常用命令参考：https://docs.mongodb.com/v3.4/support/
+mongodb github地址：https://github.com/mongodb
+原生java驱动：http://mongodb.github.io/mongo-java-driver/
+spring驱动：https://docs.spring.io/spring-data/mongodb/docs/
+
+
+
+----------交互命令方式------------
+登录mongodb：mongo 127.0.0.1:27017
+登录以后使用命令进行交互
+
+show dbs  #显示所有库
+use [dbname]  #切换到某个库，允许切换到不存在的库，然后进行其他操作，比如新增集合
+show collections  #显示当前库的所有集合
+
+db.users.insert({"name":"张三", "age":15})  #往当前库的集合users中插入一条文档
+
+------查询-----
+查询选择器：
+$eq  等于
+$lt  小于
+$gt  大于
+$lte  小于等于
+$gte  大于等于
+$in  判断元素是否在指定的集合范围里
+$nin  判断元素是否不在指定的集合范围里
+$all  判断数组中是否包含某几个元素，无关顺序
+$ne  不等于，不匹配参数条件
+$not  不匹配结果
+$or  有一个条件成立则匹配
+$nor  所有条件都不匹配
+$and  所有条件都必须匹配
+$exists  判断元素是否存在
+$regex  正则表达式匹配
+
+db.users.drop()  #删除users集合
+db.users.find()  #查询users集合下所有文档
+db.users.find().pretty()  #pretty表示格式化
+db.users.find().size()  #查询users集合的文档总数
+
+字段映射：
+db.users.find({"username":"lison"})  #查询username=lison的所有文档，返回所有键值对
+db.users.find({"username":"lison"}, {"username":1,"age":1})  #查询username=lison的所有文档，返回指定键值对
+
+db.users.find({ "favorites.cites" : { "$all" : [ "东莞" , "东京"]}})  #查询favorites.cites有东莞和东京的集合
+
+db.users.find({"username":{"$in":["lison","sean"]}})  #username存在lison或sean的
+
+db.users.find({"lenght":{"$not":{"$gte":1.77}}}).pretty()  #将lenght大于等于1.77且不存在lenght的记录全部查询出来（not语句 会把不包含查询语句字段的文档 也检索出来）
+
+db.users.find({"lenght":{"$exists":false}}).pretty()  #查询集合中没有lenght字段的文档
+db.users.find({"lenght":{"$exists":true}}).pretty()  #查询集合中有lenght字段的文档
+
+排序：
+db.users.find().sort({"lenght":-1})  #按lenght降序
+db.users.find().sort({"lenght":-1,"username":1})  #先按lenght降序，再按username升序
+
+跳过和限制（翻页查询）：
+db.users.find().sort({"lenght":-1}).limit(4).skip(1)  #只查询4条记录，且跳过前面1条记录
+
+distinct查询指定字段的唯一值集合
+db.users.distinct("age")  #查询age去重后的集合，结果如[ 6, 24, 22, 20 ]
+
+数组选择查询
+db.users.find({"favorites.movies":"蝙蝠侠"})  #按照单元素查找，查询数组中包含"蝙蝠侠"
+db.users.find({"$or":[{"favorites.movies":"蝙蝠侠"}, {"favorites.movies":"战狼"}]})  #查找包含蝙蝠侠或战狼的记录
+db.users.find({"favorites.movies":["杀破狼2", "战狼", "雷神1"]})  #精确查找，查找有且只有这三个且顺序一致的记录
+db.users.find({"favorites.movies":{"$all":[ "雷神1", "战狼"]}})  #多元素查找，查询数组包含["雷神1", "战狼" ]的文档，必须同时包含这两个，但是此时跟顺序无关
+db.users.find({"favorites.movies.0":"杀破狼2"})  #索引查询，查询数组中第一个为"杀破狼2"的文档
+db.users.find({"favorites.movies.1":"战狼"})  #索引查询，查询数组中第二个为"战狼"的文档
+db.users.find({},{"favorites.movies":{"$slice":[1,2]},"favorites":1})
+
+返回数组子集，$slice可以取两个元素数组,分别表示跳过和限制的条数【重要】
+(1)查看一个人的信息，打开页面只显示三条评论，返回所有字段
+db.users.find({"username":"lison"},{"comments":{"$slice":[0,3]},"$elemMatch":""}).pretty()
+(2)下一页查看三条评论，且只返回指定comments字段（_id是必须返回的，可以不管）
+方法一：db.users2.find({"username":"lison"},{"comments":{"$slice":[3,3]},"$id":1}).pretty();
+方法二：db.users2.find({"username":"lison"},{"comments":{"$slice":[3,3]},"$elemMatch":""}).pretty()
+
+------DBRef关联查询--------
+单个bson文档最大不能超过16M
+当文档超过16M的时候，就应该考虑使用引用（DBRef）了，在主表里存储一个id值，指向另一个表中的 id 值
+
+DBRef语法：{ "$ref" : <value>, "$id" : <value>, "$db" : <value> } 
+$ref：引用文档所在的集合的名称； 
+$id：所在集合的文档的_id字段值； 
+$db：可选，集合所在的数据库实例
+
+存储的时候，先存子表，然后获取子表的记录ID，然后存主表
+
+使用dbref脚本示例：
+var lison = db.users3.findOne({"username":"lison"});  #先查出主表
+var dbref = lison.comments;  #获取dbref
+db[dbref.$ref].findOne({"_id":dbref.$id})  #最后查出子表的所有数据
+
+------删除------
+db.users.deleteMany({"name":"zhangsan"})  #删除名称为张三的数据
+db.users.deleteMany({"$and":[{"age":{"$gt":8}}, {"age":{"$lt":35}}]})  #删除 8<=age<=35 的数据
+
+------更新------
+db.users.updateMany({"username":"lison"}, {"$set":{"age":6}}, true)  #更新名字为lison的age=6
+db.users.updateMany({ "favorites.cites" : "东莞"}, { "$addToSet" : { "favorites.movies" : { "$each" : [ "小电影2 " , "小电影3"]}}},true)  #update users set favorites.movies add "小电影2 ", "小电影3" where favorites.cites has "东莞"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

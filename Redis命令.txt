@@ -1,0 +1,211 @@
+--------------redis-cli命令---------------------
+1.交互式
+默认连接本地3306端口
+远程连接：./redis-cli.sh -h 192.168.0.1 -p 6379
+连接上以后都是交互方式，无需再执行redis-cli 
+
+2.命令方式
+./redis-cli.sh -h {host} -p {port} -a {password} {command}
+./redis-cli.sh -h 192.168.0.1 -p 6379 -a '123456' get key1  #直接命令行方式获取
+./redis-cli.sh -r 3 -i 1 ping  #每个1s(-i 1)检测redis死活，若存活则显示3次PONG(-r 3)
+./redis-cli -r 10 -i 1 info|grep used_memory_human  #每隔1秒输出内存的使用量，一共输出10次
+./redis-cli info  #获取redis使用信息
+
+
+./redis-cli.sh -h 192.168.0.1 -p 6379 -a '123456' -c get key1  #redis服务端集群情况下使用，-c可确保在所有slot中获取到数据
+
+--------------redis-server命令---------------------
+redis-server redis.conf &  #指定配置文件启动
+redis-server --test –memory 1024  #检测操作系统能否提供1G内存给redis，常用于测试，想快速占满机器内存做极端条件的测试，可使用这个指令
+
+
+--------------redis-benchmark命令---------------------
+基准性测试，测试redis性能
+
+redis-benchmark -c 100 -n 10000  #100个客户端同时请求redis，共执行10000次
+redis-benchmark -h 127.0.0.1 -p 6379 -c 100 -n 100000：100个并发连接，100000个请求，检测host为localhost 端口为6379的redis服务器性能 
+
+redis-benchmark -h 127.0.0.1 -p 6379 -q -d 100  #测试存取大小为100字节的数据包的性能
+
+redis-benchmark -h 127.0.0.1 -t set,lpush -n 100000 -q  #只测试 set,lpush操作的性能，-q只显示每秒钟能处理多少请求数结果
+
+redis-benchmark -h 127.0.0.1 -p 6379 -n 100000 -q script load "redis.call('set','foo','bar')"  #只测试某些数值存取的性能, 比如说我在慢查询中发现，大部分为set语句比较慢，我们自己可以测一下set是不是真的慢
+
+
+--------------全局命令---------------------
+keys *：查看所有键，若存在大量键，生产环境禁用此指令
+dbsize：查询键总数，若存在大量键，生产环境禁用此指令
+exists <keyname>：检查键是否存在，存在返回1，不存在返回0
+del <keyname>：删除键
+expire <key> <seconds>：设置键过期时间，在多少秒后过期
+expireat <key> <时间戳>：在某个时间点过期，时间戳类似为1516885759
+persist <key>：去除过期时间的设置
+ttl <key>：查看键的过期倒计时，秒级别的，毫秒级别的为pttl
+type key：键的数据结构类型，键不存在则返回none
+object encoding <key>：键对应的值的内部编码
+select <index>：选择数据库，单结构的redis安装好后总共有16个数据库，分别为0~15，默认处于0号库
+flushdb：清空当前数据库中的所有数据
+flushall：清空所有数据库中的所有数据
+info：redis信息，包含已有内存、配置信息、状态等
+config set <item> <value>：动态修改redis.config中的配置项item的值为value，当redis重启后失效，可使用config rewrite命令持久保存到redis.config中
+
+--------------字符串---------------------
+设置和获取：
+set <key> <value>：设置值
+set <key> <value> ex <seconds>：设置值，还有过期时间
+get <key>：获取值，若不存在key则返回nil
+mset <key1> <value1> <key2> <name2> …..：批量设置值
+mget <key1> <key2> ……：批量获取值，若不存在则返回nil
+
+计数：
+incr <key>：必须为整数自加1，非整数返回错误，无key则从0自增返回1
+decr <key>：整数自减1
+incrby <key> 2：整数key+2
+decrby <key> 2：整数key-2
+incrbyfloat <key> 1.1：浮点数+1.1
+
+追加、截取：
+append <key> “<str>”：在key后面追加一串字符串
+strlen <key>：字符串长度，每个中文占3个字节
+getrange <key> <start> <end>：截取字符串，和substring一样，start从0开始
+
+
+--------------哈希hash---------------------
+设置和获取：
+hset <key> <field> <value>：设置key中某字段的值
+hget <key> <field>：取值
+hdel <key> <field>：删值
+hlen <key>：获取key中设置的字段个数
+hmset <key> <field1> <value1> <field2> <value2> ……：批量设置
+hmget <key> <field1> <field2> …..：批量取值
+hkeys <key>：获取key的所有字段，只返回字段名称
+hvals <key>：获取key的所有字段的对应值，不返回字段名称
+hgetall <key>：返回key中所有字段名称和对应的值
+
+计数：
+hincrby <key> <field> 1：对应的整形field+1
+hincrbyfloat <key> <field> 1.1：对应浮点型field+1.2
+
+
+--------------列表list---------------------
+添加：
+rpush <key> <val1> <val2>…  常用，从右到左插入
+lpush <key> <val1> <val2>…  从左到右插入
+
+查询：
+lrange <key> <start> <stop>  指定范围查询列表
+lrange <key> 0 -1  查询全部
+lindex <key> <index>  根据下标查询具体的某个值
+llen <key>  查询list的长度
+
+修改：
+lset <key> <index> <value>  根据下标修改值
+
+删除：
+lpop <key>	从左边出栈一个值，出栈后该值从列表中删除
+rpop <key>	从右边出栈一个值，出栈后该值从列表中删除
+lrem <key> <count> <value>	从左边开始删除指定的value值，总共删除的数量为count个
+ltrim <key> <start> <end>	只保留start~end之间的元素
+
+--------------无序集合set---------------------
+新增：
+sadd <key> <val1> <val2> …	插入n个元素，无序的，若再插入相同元素，则重复无效，返回0
+
+查询：
+smembers <key>	返回key的所有元素，返回结果无序
+scard <key>	获取元素个数
+sismember <key> <val>	判断val是否其中的元素，是的话返回1，否则返回0
+srandmember <key> <count>	随机返回count个元素
+
+删除：
+srem user <val1>	删除元素val1
+spop <key> <count>	随机返回count个元素后删除
+
+交集：
+sadd usr:1 zhangsan 24 girl
+sadd usr:2 lisi 24 boy
+sinter usr:1 usr2	sinter求两者交集，此时返回24
+
+并集：
+sunion usr:1 usr:2	合并后去重，zhangsan 24 girl lisi boy
+
+差集：
+sdiff usr:1 usr:2	前者-后者=zhangsan girl
+
+交集、并集、差集结果保存：
+sinterstore usr usr:1 usr:2
+sunionstore usr usr:1 usr:2
+sdiffstore usr usr:1 usr:2	将对应的结果集保存到另一个对象usr中
+
+--------------有序集合---------------------
+新增/修改：
+zadd <key> [nx|xx] <score> <member> [<score> <member> …]	新增操作：分值 对象   支持批量操作,nx表示key必须不存在时新增，xx表示key值存在时修改。返回新增或修改的数量
+
+修改：
+zadd <key> xx incr <score> <member>	修改键值的member成员变量，incr用于相加，score可为正数，也可为负数返回相加后的数
+zincrby <key> <scope> <member>	给member成员加上分数scope，和上面的命令效果一样
+
+查询：
+zrange <key> 0 -1 withscores	查看key对应的所有成员和分数，按分数从小到大排序
+zscore <key> <member>	查看对应成员的分数
+
+排名：
+zrange <key> 0 -1 withscores	查看key对应的所有成员和分数，按分数从小到大排序，可用于查询指定排名范围的成员
+zrevrange <key> 0 -1 withscores	和zrange相反
+zrank <key> <member>	查看member的排名名次，分数越多的名次越靠后，名次从0开始计起
+zrevrank <key> <member>	和zrank相反
+
+删除：
+zrem <key> <member>	删除成员
+
+返回指定分数范围的成员：
+zrangebyscore user:4 110 300 withscores //返回120 lee ,200 James, 由低到高 
+zrevrangebyscore user:4 300 110 withscores //返回200james 120lee,由高到低
+zrangebyscore user:4 (110 +inf withscores//110到无限大，120mike 200james 
+zrevrangebyscore user:4 (110 -inf withscores//无限小到110，返回100 lee
+
+返回指定分数范围的成员个数：
+zcount user:4 110 300  //返回2，由mike120和james200两条数据
+
+删除指定排名内的升序元素：
+zremrangebyrank user:4 0 1 //分数升序排列，删除第0个与第1个，只剩james
+
+删除指定分数范围的成员
+zadd user:5 200 james 120 mike 100 lee//先插入测试数据
+zremrangebyscore user:5 100 300     //删除分数在100与300范围的成员
+zremrangebyscore user:5 (100 +inf    //删除分数大于100(不包括100),还剩lee
+
+有序集合交集：
+	格式：zinterstore destination numkeys key ... [WEIGHTS weight] [AGGREGATE SUM|MIN|MAX]
+	  destination:交集产生新的元素存储键名称 
+	  numkeys:  要做交集计算的键个数
+	  key :元素键值
+	  weights:每个被选中的键对应值乘weight, 默认为1
+	
+	初始化数据：
+	  zadd user:7 1 james 2 mike 4 jack 5 kate      //初始化user:7数据
+	  zadd user:8 3 james 4 mike 4 lucy 2 lee  6 jim  //初始化user:8数据
+	例子：
+	zinterstore user_jj 2 user:7 user:8 aggregate sum 	//2代表键合并个数，
+														//aggregate sum可加也不可加上，因为默认是sum
+														//结果user_jj：4james(1+3), 6mike(2+4) 
+	zinterstore user_jjmax 2 user:7 user:8 aggregate max 或min  //取交集最大的分数，返回结果 3james  4mike, min取最小
+	weights:
+	  zinterstore user_jjweight 2 user:7 user:8 weights 8 4 aggregate max
+		//1,取两个成员相同的交集，user:7->1 james  2 mike;  user:8->3 james  4 mike
+		//2,将user:7->james 1*8=8,  user:7->mike 2*8 =16, 最后user:7结果 8 james  16 mike; 
+		//3,将user:8-> james 3*4=12, user:8->mike 4*4=16，最后user:8结果12 james  16 mike
+		//4,最终相乘后的结果，取最大值为  12 james 16mike
+		//5,zrange user_jjweight 0 -1 withscores 查询结果为  12 james 16mike
+		
+	总结：将user:7成员值乘8，将user:8成员值乘4，取交集，取最大
+
+有序集合并集（合并去重）：
+	格式：zunionstore destination numkeys key ... [WEIGHTS weight] [AGGREGATE SUM|MIN|MAX]
+	  destination:交集产生新的元素存储键名称 
+	  numkeys:  要做交集计算的键个数
+	  key :元素键值
+	  weights:每个被选中的键对应值乘weight, 默认为1
+	
+	zunionstore user_jjweight2 2 user:7 user:8 weights 8 4 aggregate max  //与以上zinterstore一样，只是取并集，指令一样
+
