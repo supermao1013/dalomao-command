@@ -70,7 +70,7 @@ db.users.find().sort({"lenght":-1}).limit(4).skip(1)  #只查询4条记录，且
 distinct查询指定字段的唯一值集合
 db.users.distinct("age")  #查询age去重后的集合，结果如[ 6, 24, 22, 20 ]
 
-数组选择查询
+数组选择查询【重要】
 db.users.find({"favorites.movies":"蝙蝠侠"})  #按照单元素查找，查询数组中包含"蝙蝠侠"
 db.users.find({"$or":[{"favorites.movies":"蝙蝠侠"}, {"favorites.movies":"战狼"}]})  #查找包含蝙蝠侠或战狼的记录
 db.users.find({"favorites.movies":["杀破狼2", "战狼", "雷神1"]})  #精确查找，查找有且只有这三个且顺序一致的记录
@@ -79,14 +79,25 @@ db.users.find({"favorites.movies.0":"杀破狼2"})  #索引查询，查询数组
 db.users.find({"favorites.movies.1":"战狼"})  #索引查询，查询数组中第二个为"战狼"的文档
 db.users.find({},{"favorites.movies":{"$slice":[1,2]},"favorites":1})
 
+对象数组选择查询，如评论【重要】
+db.users2.find({"comments":{"author" : "lison6","content" : "lison评论6","commentTime" : ISODate("2017-12-06T04:26:18.354Z")}})  #查询comments中符合条件的，极其精确的查找，comments中必须有且只有这三个字段，且对应的值和输入条件一致才可以查询出来
+
+db.users2.find({"comments.author":{"$in":["lison1","lison12"]}}).pretty()  #查找lison1 或者 lison12评论过的user(跟数量无关，跟顺序无关)
+
+db.users2.find({"comments.author":{"$all":["lison12","lison1"]}}).pretty()  #查找lison1 和 lison12都评论过的user(跟数量有关，跟顺序无关)
+
+db.users.find({"comments":{"$elemMatch":{"author" : "lison5",
+"content" : "lison是苍老师的小迷弟"}}}) .pretty()  #查找lison5评语为“lison是苍老师的小迷弟”的user($全元素匹配，和顺序无关)
+
+
 返回数组子集，$slice可以取两个元素数组,分别表示跳过和限制的条数【重要】
 (1)查看一个人的信息，打开页面只显示三条评论，返回所有字段
 db.users.find({"username":"lison"},{"comments":{"$slice":[0,3]},"$elemMatch":""}).pretty()
 (2)下一页查看三条评论，且只返回指定comments字段（_id是必须返回的，可以不管）
-方法一：db.users2.find({"username":"lison"},{"comments":{"$slice":[3,3]},"$id":1}).pretty();
+方法一【推荐】：db.users2.find({"username":"lison"},{"comments":{"$slice":[3,3]},"$id":1}).pretty();
 方法二：db.users2.find({"username":"lison"},{"comments":{"$slice":[3,3]},"$elemMatch":""}).pretty()
 
-------DBRef关联查询--------
+------DBRef关联查询【用的较少，一般自定义ID进行关联，比较灵活可控】--------
 单个bson文档最大不能超过16M
 当文档超过16M的时候，就应该考虑使用引用（DBRef）了，在主表里存储一个id值，指向另一个表中的 id 值
 
@@ -101,6 +112,44 @@ $db：可选，集合所在的数据库实例
 var lison = db.users3.findOne({"username":"lison"});  #先查出主表
 var dbref = lison.comments;  #获取dbref
 db[dbref.$ref].findOne({"_id":dbref.$id})  #最后查出子表的所有数据
+
+-------------------聚合查询----------------------
+面对复杂的查询，如分组、排序等，应该使用聚合查询
+聚合框架就是定义一个管道，管道里的每一步都为下一步输出数据数据
+
+常用管道操作：
+	$project：投影，指定输出文档中的字段；
+	$match：用于过滤数据，只输出符合条件的文档。$match使用MongoDB的标准查询操作
+	$limit：用来限制MongoDB聚合管道返回的文档数。
+	$skip：在聚合管道中跳过指定数量的文档，并返回余下的文档。
+	$unwind：将文档中的某一个数组类型字段拆分成多条，每条包含数组中的一个值。
+	$group：将集合中的文档分组，可用于统计结果。
+	$sort：将输入文档排序后输出。
+
+$group：可以分组的数据执行如下的表达式计算：
+	$sum：计算总和。
+	$avg：计算平均值。
+	$min：根据分组，获取集合中所有文档对应值得最小值。
+	$max：根据分组，获取集合中所有文档对应值得最大值。
+	$push：将指定的表达式的值添加到一个数组中。
+	$addToSet：将表达式的值添加到一个集合中（无重复值）。
+ 	$first：返回每组第一个文档，如果有排序，按照排序，如果没有按照默认的存储的顺序的第一个文档。
+ 	$last：返回每组最后一个文档，如果有排序，按照排序，如果没有按照默认的存储的顺序的最后个文档。
+
+需求1：找出username为lison中的所有评论，然后对这些评论进行分页查询，并按照每条评论的时间做升序排序:
+db.users2.aggregate([{"$match":{"username":"lison"}},
+	 {"$unwind":"$comments"},
+	 {$sort:{"comments.commentTime":-1}},
+	 {"$project":{"comments":1}},
+	 {"$skip":6},
+	 {"$limit":3}])
+
+需求2：查询2015年4月3号之前，每个用户每个月消费了多少钱，并按用户名进行排序：
+db.ordersTest.aggregate([
+	  {"$match":{ "orderTime" : { "$lt" : new Date("2015-04-03T16:00:00.000Z")}}}, 
+	  {"$group":{"_id":{"useCode":"$useCode","month":{"$month":"$orderTime"}},"total":{"$sum":"$price"}}}, 
+	  {"$sort":{"_id":1}}    
+	])
 
 ------删除------
 db.users.deleteMany({"name":"zhangsan"})  #删除名称为张三的数据
