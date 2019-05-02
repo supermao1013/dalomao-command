@@ -12,10 +12,34 @@ mongodb github地址：https://github.com/mongodb
 原生java驱动：http://mongodb.github.io/mongo-java-driver/
 spring驱动：https://docs.spring.io/spring-data/mongodb/docs/
 
+----------常用命令--------------------------------
+show dbs ：显示数据库列表
+show collections ：显示集合列表
+db : 显示当前数据库
+db.stats() ：显示数据库信息
+db.serverStatus() ： 查看服务器状态
+db.dropDatabase()：删除数据库
+db.help()，db.collection.help()：内置帮助，显示各种方法的说明；
+db.users.find().size()：获取查询集合的数量； 
+db.users.drop()：删除集合；
 
+yum安装mongod启停命令：
+systemctl start mongod
+systemctl stop mongod
 
+非yum安装mongod停止命令：
+	方式一：
+		use admin
+		db.shutdownServer()
+	方式二：
+		mongod --shutdown -f mongodb.conf
+
+				
 ----------交互命令方式------------
 登录mongodb：mongo 127.0.0.1:27017
+
+以密码方式登录：mongo 127.0.0.1:27017 -u maohw -p 123456 --authenticationDatabase maohw
+
 登录以后使用命令进行交互
 
 show dbs  #显示所有库
@@ -156,27 +180,204 @@ db.users.deleteMany({"name":"zhangsan"})  #删除名称为张三的数据
 db.users.deleteMany({"$and":[{"age":{"$gt":8}}, {"age":{"$lt":35}}]})  #删除 8<=age<=35 的数据
 
 ------更新------
+【注意】mongodb的更新都是原子的，mongodb所有的写操作都是有锁的。
+mongoDB 2.2之前锁级别为实例级别，mongoDB 2.2以后版本锁级别为数据库级别，mongoDB 3.0中，WiredTiger的锁级别是文档级别；
+
+update()、updateOne()、updateMany() 方法用于更新已存在的文档。语法格式如下：
+db.collection.update( <query>, <update>, { upsert: <boolean>, multi: <boolean>, writeConcern: <document> } )
+参数说明：
+query : update的查询条件，类似sql update查询内where后面的；
+update : update的对象和一些更新的操作符（如$,$inc...）等，也可以理解为sql update查询内set后面的
+upsert : 可选，这个参数的意思是，如果不存在update的记录，是否插入objNew,true为插入，默认是false，不插入。
+multi : 可选，mongodb 默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。若为updateOne()则该参数默认为false，若为updateMany()则该参数默认为true
+writeConcern :可选，写安全配置
+
+更新操作符：
+操作符：
+$inc  指定值加n
+$set  更新指定字段
+$unset  将指定字段删除
+$rename  更新字段名称
+
+数组操作符：
+$  定位到某一个元素
+$push  添加值到数组中
+$addToSet  添加值到数组中，有重复则不处理
+$pop  删除数组第一个或者最后一个
+$pull  从数组中删除匹配查询条件的值
+$pullAll  从数组中删除多个值
+
+数组运算修饰符：
+$each  与$push和$addToSet等一起使用来操作多个值
+$slice  与$push和$each一起使用来操作用来缩小更新后数组的大小
+$sort  与$push、$each和$slice一起使用来对数组进行排序
+
+隔离运算符：
+$isolated  隔离其他操作，不允许其他操作交叉更新，不能再分片中使用
+
+删除字段示例：删除username=lison的文档的country和age字段
+db.users2.updateMany({"username":"lison"},{"$unset":{"country":"","age":""}})
+
+更新字段名称示例：将username=jack的字段country名称改为guojia，字段age名臣更改为nianling
+db.users2.updateMany({"username":"jack"},{"$rename":{"country":"guojia","age":"nianling"}})
+
+$each作用示例
+在username=jack的文档中，对favorites.movies数组新增两个元素：小电影2、小电影3
+db.users2.updateMany({ "username" : "jack"}, { "$addToSet" : { "favorites.movies" : { "$each" : [ "小电影2 " , "小电影3"]}}})
+在username=jack的文档中，对favorites.movies数组新增一个数组内容：[小电影2、小电影3]，注意和上面语句的区别，这里是个坑【注意】
+db.users2.updateMany({ "username" : "jack"}, { "$addToSet" : { "favorites.movies" : [ "小电影2 " , "小电影3"]}})
+
+删除字符串数组中元素示例
+在username=jack的文档中，删除favorites.movies数组元素：小电影2、小电影3
+db.users2.updateMany({ "username" : "jack"}, { "$pullAll" : { "favorites.movies" : [ "小电影2 " , "小电影3"]}})
+在username=jack的文档中，删除favorites.movies中的数组元素：[小电影2、小电影3]，顺序和数量一致的才会删除，注意和上面的pullAll的区别，这里是个坑【注意】
+db.users2.updateMany({ "username" : "jack"}, { "$pull" : { "favorites.movies" : [ "小电影2 ","小电影3"]}})
+
+给jack老师增加一条评论（$push）
+db.users2.updateOne({"username":"jack"},{"$push":{"comments":{"author":"lison23","content":"ydddyyytttt"}}})
+
+给jack老师批量新增两条评论（$push,$each）
+db.users2.updateOne({"username":"jack"},     
+       {"$push":{"comments":
+                  {"$each":[{"author":"lison22","content":"yyyytttt"},
+                                  {"author":"lison23","content":"ydddyyytttt"}]}}})
+
+给jack老师批量新增两条评论并对数组进行排序（$push,$eachm,$sort）
+db.users2.updateOne({"username":"jack"}, 
+      {"$push": {"comments":
+                {"$each":[ {"author":"lison22","content":"yyyytttt"},
+                           {"author":"lison23","content":"ydddyyytttt"} ], 
+                  $sort: {"author":1} } } })
+
+删除lison22对jack的所有评论 （批量删除）
+db.users2.update({"username":"jack"},{"$pull":{"comments":{"author":"lison22"}}})
+
+删除lison5对lison评语为“lison是苍老师的小迷弟”的评论
+db.users2.update({"username":"lison"},{"$pull":{"comments":{"author":"lison5","content":"lison是苍老师的小迷弟"}}})
+【注意】精确修改某人某一条精确的评论，如果有多个符合条件的数据，则修改最后一条数据。无法批量修改数组元素
+
+更新对象数组中元素，$符号示例
+db.users2.updateMany({"username":"jack","comments.author":"lison1"},
+                    {"$set":{"comments.$.content":"xxoo",
+                             "comments.$.author":"lison10" }})
+
+
 db.users.updateMany({"username":"lison"}, {"$set":{"age":6}}, true)  #更新名字为lison的age=6
 db.users.updateMany({ "favorites.cites" : "东莞"}, { "$addToSet" : { "favorites.movies" : { "$each" : [ "小电影2 " , "小电影3"]}}},true)  #update users set favorites.movies add "小电影2 ", "小电影3" where favorites.cites has "东莞"
 
+常规的update的方法不能返回更新后的数据
+db.num.update({"_id":ObjectId("5a5b4c285731a2a7cd01c5ae")},{"$inc":{"order":1}})
+使用findandModify方法在修改数据同时返回更新前的数据或更新后的数据
+db.num.findAndModify({
+	"query":{"_id":ObjectId("5a58cef99506c50abaeb4384")},
+	"update":{"$inc":{"saleOrder":1}},
+	"new" : true
+})
 
 
+$isolated命令：mongoDB对写锁进行了优化，对长时间的写操作会为其他的读写操作让路，使用$isolated可以避免这种让路，隔离其他操作，不允许其他操作交叉更新，不能在分片中使用；
+例如长时间的批量更新操作：
+db.users.update(
+		{"$isolated”:true},
+        {"username":"lison"},
+        {"$pull":{"comments":{"author":"lison5","content":"lison是苍老师的小迷弟"}}})
 
 
+--------------------------数据管理命令--------------------------------
+数据备份  mongodump(针对数据库)
+./mongodump -h localhost:27022 -d lison -o /usr/local/apache/mongoDB/
+-h :指定ip和端口； -d :备份的数据库名称 ； -o:指定备份的路径
+其本质为：执行查询，然后写入文件；
+	   
+数据恢复  mongorestore(针对数据库)
+./mongorestore -h localhost:27022  -d lison /usr/local/apache/mongoDB/lison/ --drop
+--drop 已存在lison库则删除原数据库，去掉--drop则是合并
+	 
+数据导出  mongoexport（针对集合）
+./mongoexport -h localhost:27022 -d lison -c users -f id,username,age,salary --type=csv -o /usr/local/apache/mongoDB/users.csv
+-c :指定导出的集合； -f :要导出的字段； --type：导出的文件格式类型[csv,json]
+
+数据导入  mongoimport（针对集合）
+./mongoimport -h localhost:27022 -d lison -c users  /usr/local/apache/mongoDB/users.csv --upsert
+--upsert  表示导入时若碰到相同id的数据则更新现有数据，如果不使用--upsert,则导入时已经存在的文档会报id重复，数据不再插入，也可以使用—-drop删除原有数据
 
 
+--------------------索引--------------------------------------
+索引分为 单键索引、复合索引、多键索引、哈希索引
+
+在使用复合索引查询的时候一定要注意顺序，如果查询条件的顺序不一致是不会走索引的
+
+索引属性：
+background  boolean  是否后台构建索引,在生产环境中,如果数据量太大,构建索引可能会消耗很长时间,为了不影响业务,可以加上此参数,后台运行同时还会为其他读写操作让路
+unique  boolean  是否为唯一索引
+name  string  索引名字
+sparse  boolean  是否为稀疏索引,索引仅引用具有指定字段的文档。
+
+1：升序  -1：降序
+
+创建索引
+	单键唯一索引:db.users.createIndex({username :1},{unique:true});
+	单键唯一稀疏索引:db.users.createIndex({username :1},{unique:true,sparse:true});
+	复合唯一稀疏索引:db.users.createIndex({username:1,age:-1},{unique:true,sparse:true});
+	创建哈希索引并后台运行:db.users. createIndex({username :'hashed'},{background:true});
+
+删除索引
+	根据索引名字删除某一个指定索引:db.users.dropIndex("username_1");
+	删除某集合上所有索引:db.users.dropIndexs();
+	重建某集合上所有索引:db.users.reIndex();
+	查询集合上所有索引:db.users.getIndexes();
 
 
+-------------------------索引慢查询优化---------------------------
+第一步：开启内置的查询分析器,记录读写操作效率: db.setProfilingLevel(n,{m}),n的取值可选0,1,2；
+	0是默认值表示不记录；
+	1表示记录慢速操作,如果值为1,m必须赋值单位为ms,用于定义慢速查询时间的阈值；
+	2表示记录所有的读写操作； 例如:db.setProfilingLevel(1,300)
+监控结果保存在一个特殊的盖子集合system.profile里,这个集合分配了128kb的空间,要确保监控分析数据不会消耗太多的系统性资源；盖子集合维护了自然的插入顺序,可以使用$natural操作符进行排序,如:
+db.system.profile.find().sort({'$natural':-1}).limit(5)
+盖子集合 说明：
+	1.大小或者数量固定；
+	2.不能做update和delete操作；
+	3.容量满了以后,按照时间顺序,新文档会覆盖旧文档
 
+第二步：分析慢查询
+找出慢速查询的原因比较棘手,原因可能有多个:应用程序设计不合理、不正确的数据模型、硬件配置问题,缺少索引等；接下来对于缺少索引的情况进行分析: 使用explain分析慢速查询 
+例如:db.orders.find({'price':{'$lt':2000}}).explain('executionStats') 
+explain的入参可选值为:
+	"queryPlanner" 是默认值,表示仅仅展示执行计划信息；
+	"executionStats" 表示展示执行计划信息同时展示被选中的执行计划的执行情况信息；
+	"allPlansExecution" 表示展示执行计划信息,并展示被选中的执行计划的执行情况信息,还展示备选的执行计划的执行情况信息；	
+	
+第二步：解读explain结果
+	queryPlanner（执行计划描述）
+		winningPlan（被选中的执行计划）
+			stage（可选项:COLLSCAN 没有走索引；IXSCAN使用了索引）
+		rejectedPlans(候选的执行计划)
+	executionStats(执行情况描述)
+		nReturned （返回的文档个数）
+		executionTimeMillis（执行时间ms）
+		totalKeysExamined （检查的索引键值个数）
+		totalDocsExamined （检查的文档个数）
+优化目标 Tips:
+1.根据需求建立索引
+2.每个查询都要使用索引以提高查询效率, winningPlan. stage 必须为IXSCAN ；
+3.追求totalDocsExamined = nReturned
 
+--------------------------------调优过程--------------------
+1.测试语句（前提：先造50w数据）
+ db.orders.find({"useCode":"james", "orderTime" : 
+                { "$lt" : new Date("2015-04-03T16:00:00.000Z")}}).explain('executionStats')
+2.新建第一个单键索引
+db.ordersTest.createIndex({"useCode":-1});
+3.新建一个复合索引
+db.ordersTest.createIndex({"useCode":-1,"orderTime":-1});
+4.演示复合索引的使用和索引的顺序是有关系的
+db.users.createIndex({username:1,age:-1})
+用了索引：db.users.find().sort({username:1,age:-1}).explain("executionStats") 
+用了索引：db.users.find().sort({username:-1,age:1}).explain("executionStats") 
+不用索引：db.users.find().sort({username:-1,age:-1}).explain("executionStats") 
+不用索引：db.users.find().sort({age:-1,username:1}).explain("executionStats") 
 
-
-
-
-
-
-
-
-
+复合索引中的顺序是极其重要的，只要查询条件和复合索引中的全正向或全反向都可以用到索引，否则不走索引！！
 
 
