@@ -1,78 +1,78 @@
------------du ÃüÁî-----------------
-du -sh   ²é¿´µ±Ç°Ä¿Â¼×Ü¹²Õ¼µÄÈİÁ¿¡£¶ø²»µ¥¶ÀÁĞ³ö¸÷×ÓÏîÕ¼ÓÃµÄÈİÁ¿
-du -lh --max-depth=1 : ²é¿´µ±Ç°Ä¿Â¼ÏÂÒ»¼¶×ÓÎÄ¼şºÍ×ÓÄ¿Â¼Õ¼ÓÃµÄ´ÅÅÌÈİÁ¿
-du -sh * | sort -n Í³¼Æµ±Ç°ÎÄ¼ş¼Ğ(Ä¿Â¼)´óĞ¡£¬²¢°´ÎÄ¼ş´óĞ¡ÅÅĞò
-du -sk filename ²é¿´Ö¸¶¨ÎÄ¼ş´óĞ¡
+-----------du å‘½ä»¤-----------------
+du -sh   æŸ¥çœ‹å½“å‰ç›®å½•æ€»å…±å çš„å®¹é‡ã€‚è€Œä¸å•ç‹¬åˆ—å‡ºå„å­é¡¹å ç”¨çš„å®¹é‡
+du -lh --max-depth=1 : æŸ¥çœ‹å½“å‰ç›®å½•ä¸‹ä¸€çº§å­æ–‡ä»¶å’Œå­ç›®å½•å ç”¨çš„ç£ç›˜å®¹é‡
+du -sh * | sort -n ç»Ÿè®¡å½“å‰æ–‡ä»¶å¤¹(ç›®å½•)å¤§å°ï¼Œå¹¶æŒ‰æ–‡ä»¶å¤§å°æ’åº
+du -sk filename æŸ¥çœ‹æŒ‡å®šæ–‡ä»¶å¤§å°
 
-history   #²é¿´Ö®Ç°Ö´ĞĞµÄËùÓĞÖ¸Áî£¬·Ç³£ÓĞÓÃ£¡
-
-
-----------ÈíÁ¬½Ó------------------
-ÈíÁ´½Ó£ºÏàµ±ÓÚwindowsÏµÍ³µÄ¿ì½İ·½Ê½£¬É¾³ıÔ´ÎÄ¼ş£¬ÈíÁ´½Ó¾Í·ÃÎÊ²»ÁË
-ln -s Ô´ÎÄ¼ş»òÄ¿Â¼£¨ÕæÕı´æ´¢µÄµØ·½£© Ä¿±êÎÄ¼ş»òÄ¿Â¼£¨¿ì½İ·½Ê½Ä¿Â¼£©£º´´½¨ÈíÁ´½Ó
-´´½¨/var/test ÒıÏò/var/www/test ÎÄ¼ş¼Ğ£ºln ¨Cs  /var/www/test   /var/test 
-Ó²Á´½Ó£ºÏàµ±ÓÚ±¸·İÁËÎÄ¼ş£¬µ«ÊÇ»¹¿ÉÒÔºÍÔ´ÎÄ¼şÄÚÈİÍ¬²½£¬É¾³ıÔ´ÎÄ¼ş£¬Ó²Á´½ÓÎÄ¼şÈÔÈ»ÓĞĞ§
+history   #æŸ¥çœ‹ä¹‹å‰æ‰§è¡Œçš„æ‰€æœ‰æŒ‡ä»¤ï¼Œéå¸¸æœ‰ç”¨ï¼
 
 
-----------cat ÃüÁî-------------------------
-cat -n test.log  ²é¿´ÎÄ¼ş²¢ÏÔÊ¾ĞĞÊı
-cat test.log|wc -l  ²é¿´ÎÄ¼ş×ÜĞĞÊı
-cat test.log|grep '123456' --col  ²é¿´ÎÄ¼ş£¬²¢¹ıÂËÌõ¼ş£¬--col±íÊ¾¸ßÁÁÏÔÊ¾
-
-----------ls ll ²é¿´ÎÄ¼şÃüÁî----------------
-ls -lh£ºÒÔMBµ¥Î»²é¿´ÎÄ¼şÁĞ±í
-ls -lrt£º°´ÎÄ¼şĞŞ¸ÄÊ±¼äÉıĞò²é¿´ÎÄ¼şÁĞ±í
-ls -lt£º°´ÎÄ¼şÊ±¼ä½µĞò²é¿´ÎÄ¼şÁĞ±í
-ls -l |grep "^-"|wc -l  #²é¿´µ±Ç°Ä¿Â¼ÏÂÎÄ¼şµÄ¸öÊı£¬²»°üÀ¨×ÓÄ¿Â¼
-ls -lR|grep "^-"|wc -l  #²é¿´µ±Ç°Ä¿Â¼ÏÂÎÄ¼şµÄ¸öÊı£¬°üÀ¨×ÓÄ¿Â¼
-ls -lR|grep "^d"|wc -l  #²é¿´µ±Ç°Ä¿Â¼ÏÂÎÄ¼ş¼ĞµÄ¸öÊı£¬°üÀ¨×ÓÄ¿Â¼
+----------è½¯è¿æ¥------------------
+è½¯é“¾æ¥ï¼šç›¸å½“äºwindowsç³»ç»Ÿçš„å¿«æ·æ–¹å¼ï¼Œåˆ é™¤æºæ–‡ä»¶ï¼Œè½¯é“¾æ¥å°±è®¿é—®ä¸äº†
+ln -s æºæ–‡ä»¶æˆ–ç›®å½•ï¼ˆçœŸæ­£å­˜å‚¨çš„åœ°æ–¹ï¼‰ ç›®æ ‡æ–‡ä»¶æˆ–ç›®å½•ï¼ˆå¿«æ·æ–¹å¼ç›®å½•ï¼‰ï¼šåˆ›å»ºè½¯é“¾æ¥
+åˆ›å»º/var/test å¼•å‘/var/www/test æ–‡ä»¶å¤¹ï¼šln â€“s  /var/www/test   /var/test
+ç¡¬é“¾æ¥ï¼šç›¸å½“äºå¤‡ä»½äº†æ–‡ä»¶ï¼Œä½†æ˜¯è¿˜å¯ä»¥å’Œæºæ–‡ä»¶å†…å®¹åŒæ­¥ï¼Œåˆ é™¤æºæ–‡ä»¶ï¼Œç¡¬é“¾æ¥æ–‡ä»¶ä»ç„¶æœ‰æ•ˆ
 
 
-----------ÈÕÖ¾²é¿´ºÍ¹ıÂËÃüÁî---------------
-tail -1000 dc_collect_request_data.log   #²é¿´×îºó1000ĞĞµÄÈÕÖ¾±ä»¯£¬·ÇÊµÊ±
-tail -1000 dc_collect_request_data.log|grep SPECIAL_POP_COVER_LIMIT_SERVICE   #grep¹ıÂË×÷ÓÃ£¬Ö»¿´°üº¬SPECIAL_POP_COVER_LIMIT_SERVICEµÄĞĞ
+----------cat å‘½ä»¤-------------------------
+cat -n test.log  æŸ¥çœ‹æ–‡ä»¶å¹¶æ˜¾ç¤ºè¡Œæ•°
+cat test.log|wc -l  æŸ¥çœ‹æ–‡ä»¶æ€»è¡Œæ•°
+cat test.log|grep '123456' --col  æŸ¥çœ‹æ–‡ä»¶ï¼Œå¹¶è¿‡æ»¤æ¡ä»¶ï¼Œ--colè¡¨ç¤ºé«˜äº®æ˜¾ç¤º
 
-tail -1000f dc_collect_request_data.log   #ÊµÊ±²é¿´×îºó1000ĞĞµÄÈÕÖ¾±ä»¯£¬-f±íÊ¾ÊµÊ±
-tail -1000f dc_collect_request_data.log|grep SPECIAL_POP_COVER_LIMIT_SERVICE   #grep¹ıÂË×÷ÓÃ£¬Ö»¿´°üº¬SPECIAL_POP_COVER_LIMIT_SERVICEµÄĞĞ
+----------ls ll æŸ¥çœ‹æ–‡ä»¶å‘½ä»¤----------------
+ls -lhï¼šä»¥MBå•ä½æŸ¥çœ‹æ–‡ä»¶åˆ—è¡¨
+ls -lrtï¼šæŒ‰æ–‡ä»¶ä¿®æ”¹æ—¶é—´å‡åºæŸ¥çœ‹æ–‡ä»¶åˆ—è¡¨
+ls -ltï¼šæŒ‰æ–‡ä»¶æ—¶é—´é™åºæŸ¥çœ‹æ–‡ä»¶åˆ—è¡¨
+ls -l |grep "^-"|wc -l  #æŸ¥çœ‹å½“å‰ç›®å½•ä¸‹æ–‡ä»¶çš„ä¸ªæ•°ï¼Œä¸åŒ…æ‹¬å­ç›®å½•
+ls -lR|grep "^-"|wc -l  #æŸ¥çœ‹å½“å‰ç›®å½•ä¸‹æ–‡ä»¶çš„ä¸ªæ•°ï¼ŒåŒ…æ‹¬å­ç›®å½•
+ls -lR|grep "^d"|wc -l  #æŸ¥çœ‹å½“å‰ç›®å½•ä¸‹æ–‡ä»¶å¤¹çš„ä¸ªæ•°ï¼ŒåŒ…æ‹¬å­ç›®å½•
 
-tailf dc_collect_request_data.log   #ÊµÊ±²é¿´ÈÕÖ¾±ä»¯£¬ËùÓĞÈÕÖ¾È«²¿ÏÔÊ¾³öÀ´
-tailf dc_collect_request_data.log|grep SPECIAL_POP_COVER_LIMIT_SERVICE   #grep¹ıÂË×÷ÓÃ£¬Ö»¿´°üº¬SPECIAL_POP_COVER_LIMIT_SERVICEµÄĞĞ
 
-tail -c 100 dc_collect_request_data.log  #²é¿´×îºó100¸ö×Ö·ûÄÚÈİ
-head -c 100 dc_collect_request_data.log  #²é¿´Ç°100¸ö×Ö·ûÄÚÈİ
+----------æ—¥å¿—æŸ¥çœ‹å’Œè¿‡æ»¤å‘½ä»¤---------------
+tail -1000 dc_collect_request_data.log   #æŸ¥çœ‹æœ€å1000è¡Œçš„æ—¥å¿—å˜åŒ–ï¼Œéå®æ—¶
+tail -1000 dc_collect_request_data.log|grep SPECIAL_POP_COVER_LIMIT_SERVICE   #grepè¿‡æ»¤ä½œç”¨ï¼Œåªçœ‹åŒ…å«SPECIAL_POP_COVER_LIMIT_SERVICEçš„è¡Œ
 
-grep -o SPECIAL_POP_COVER_LIMIT_SERVICE dc_collect_request_data.log   #-o±íÊ¾Ö»ÌáÈ¡SPECIAL_POP_COVER_LIMIT_SERVICEµÄÄÚÈİ£¨¶ø²»ÊÇÕûĞĞ£©£¬Êä³öµ½ÆÁÄ»
-grep -o 'order-fix.curr_id:\([0-9]\+\)' demo.log   #grepÖ§³ÖÕıÔò±í´ïÊ½£¬ÌáÈ¡order-fix.curr_id:xxxÄÚÈİ£¬Êä³öµ½ÆÁÄ»
-grep -c 'ERR' dc_collect_request_data.log   #Êä³öÎÄ¼şdc_collect_request_data.logÖĞ²éÕÒËùÓĞ°üĞĞERRµÄĞĞµÄÊıÁ¿
-grep -v 'ERROR' demo.log   #·´Ïò²éÕÒ£¬¼´²éÕÒ²»º¬"ERROR"µÄĞĞ  
-grep -C 5 foo file ÏÔÊ¾fileÎÄ¼şÀïÆ¥Åäfoo×Ö´®ÄÇĞĞÒÔ¼°ÉÏÏÂ5ĞĞ
-grep -B 5 foo file ÏÔÊ¾foo¼°Ç°5ĞĞ
-grep -A 5 foo file ÏÔÊ¾foo¼°ºó5ĞĞ
+tail -1000f dc_collect_request_data.log   #å®æ—¶æŸ¥çœ‹æœ€å1000è¡Œçš„æ—¥å¿—å˜åŒ–ï¼Œ-fè¡¨ç¤ºå®æ—¶
+tail -1000f dc_collect_request_data.log|grep SPECIAL_POP_COVER_LIMIT_SERVICE   #grepè¿‡æ»¤ä½œç”¨ï¼Œåªçœ‹åŒ…å«SPECIAL_POP_COVER_LIMIT_SERVICEçš„è¡Œ
 
-cat -n demo.log|grep ERROR |grep INFO   #²éÑ¯¹Ø¼ü×ÖµÄÈÕÖ¾£¬ÏÔÊ¾ĞĞºÅ
+tailf dc_collect_request_data.log   #å®æ—¶æŸ¥çœ‹æ—¥å¿—å˜åŒ–ï¼Œæ‰€æœ‰æ—¥å¿—å…¨éƒ¨æ˜¾ç¤ºå‡ºæ¥
+tailf dc_collect_request_data.log|grep SPECIAL_POP_COVER_LIMIT_SERVICE   #grepè¿‡æ»¤ä½œç”¨ï¼Œåªçœ‹åŒ…å«SPECIAL_POP_COVER_LIMIT_SERVICEçš„è¡Œ
 
-zgrep -a 'ipswitch' hlb_last_cover_* | grep 'dx_fujian'    #tar.gz°üµÄÄÚÈİ²é¿´£¬ÎŞĞè½âÑ¹
+tail -c 100 dc_collect_request_data.log  #æŸ¥çœ‹æœ€å100ä¸ªå­—ç¬¦å†…å®¹
+head -c 100 dc_collect_request_data.log  #æŸ¥çœ‹å‰100ä¸ªå­—ç¬¦å†…å®¹
 
-----------sed¹ıÂËÌæ»»ºÍsortÅÅĞò----------------
-sedµÄËùÓĞ²Ù×÷»áÄ¬ÈÏ½«½á¹ûÊä³öÆÁÄ»£¬¶ø²»»áĞŞ¸Äµ½Ô´ÎÄ¼ş£¬ÈôÒªÊä³öµ½ÎÄ¼ş£¬ÇëÊ¹ÓÃ£º> /usr/local/temp/file
-/p±íÊ¾´òÓ¡  /d±íÊ¾É¾³ı  /s±íÊ¾Ìæ»»
-sed 's/book/books' demo.log   #ÔÚÃ¿¸öÊäÈëĞĞÖĞ, ½«µÚÒ»¸ö³öÏÖµÄ"book"Ìæ»»Îª"books",²»»áĞŞ¸Äµ½Ô´ÎÄ¼ş
-sed 's/book/books/g' demo.log   #ÔÚÃ¿¸öÊäÈëĞĞÖĞ£¬½«ËùÓĞ"book"Ìæ»»Îª"books"£¬/g±íÊ¾Ìæ»»Ã¿ĞĞÖĞµÄËùÓĞÆ¥Åä,²»»áĞŞ¸Äµ½Ô´ÎÄ¼ş
-sed -i 's/book/books/g' demo.log   #ÔÚÃ¿¸öÊäÈëĞĞÖĞ£¬½«ËùÓĞ"book"Ìæ»»Îª"books"£¬/g±íÊ¾Ìæ»»Ã¿ĞĞÖĞµÄËùÓĞÆ¥Åä,-iÖ±½ÓĞŞ¸ÄÔ´ÎÄ¼ş
-sed -i 's/\\//g' demo.log  #½«ËùÅ¼Óö\·ûºÅÌæ»»Îª¿Õ¸ñ£¬-iÖ±½ÓĞŞ¸ÄÔ´ÎÄ¼ş
+grep -o SPECIAL_POP_COVER_LIMIT_SERVICE dc_collect_request_data.log   #-oè¡¨ç¤ºåªæå–SPECIAL_POP_COVER_LIMIT_SERVICEçš„å†…å®¹ï¼ˆè€Œä¸æ˜¯æ•´è¡Œï¼‰ï¼Œè¾“å‡ºåˆ°å±å¹•
+grep -o 'order-fix.curr_id:\([0-9]\+\)' demo.log   #grepæ”¯æŒæ­£åˆ™è¡¨è¾¾å¼ï¼Œæå–order-fix.curr_id:xxxå†…å®¹ï¼Œè¾“å‡ºåˆ°å±å¹•
+grep -c 'ERR' dc_collect_request_data.log   #è¾“å‡ºæ–‡ä»¶dc_collect_request_data.logä¸­æŸ¥æ‰¾æ‰€æœ‰åŒ…è¡ŒERRçš„è¡Œçš„æ•°é‡
+grep -v 'ERROR' demo.log   #åå‘æŸ¥æ‰¾ï¼Œå³æŸ¥æ‰¾ä¸å«"ERROR"çš„è¡Œ
+grep -C 5 foo file æ˜¾ç¤ºfileæ–‡ä»¶é‡ŒåŒ¹é…fooå­—ä¸²é‚£è¡Œä»¥åŠä¸Šä¸‹5è¡Œ
+grep -B 5 foo file æ˜¾ç¤ºfooåŠå‰5è¡Œ
+grep -A 5 foo file æ˜¾ç¤ºfooåŠå5è¡Œ
 
-sed /^$/d demo.log   #É¾³ıËùÓĞ¿ÕĞĞ
-sed 2d demo.log   #É¾³ıµÚ2ĞĞ
-sed -n '/error/p' demo.log   #Ö»´òÓ¡°üº¬errorµÄĞĞ
-sed 's/ *$//' demo.log   #É¾³ıµôÃ¿ĞĞ½áÎ²µÄËùÓĞ¿Õ¸ñ
-sed 's/00*/0/g' demo.log   #½«ËùÓĞÁ¬Ğø³öÏÖµÄ0¶¼Ñ¹Ëõ³Éµ¥¸ö0
-sed '/ERROR/d' demo.log   #É¾³ıµôËùÓĞ°üº¬"ERROR"µÄĞĞ
-sed 's/ERROR//g' demo.log   #½«ËùÓĞ"ERROR"É¾³ıµô£¬²¢±£³ÖÊ£Óà²¿·ÖµÄÍêÕûĞÔ
+cat -n demo.log|grep ERROR |grep INFO   #æŸ¥è¯¢å…³é”®å­—çš„æ—¥å¿—ï¼Œæ˜¾ç¤ºè¡Œå·
 
-sed -n '/^2018-02-24.*ERR/p'  dc_collect_request_data.log   #Êä³öÖ¸¶¨ÈÕÆÚÖĞµÄERRÈÕÖ¾µ½ÆÁÄ»
-sed -n '/^2018-02-24.*ERR/p'  dc_collect_request_data.log > /usr/local/temp/error   #Êä³öÖ¸¶¨ÈÕÆÚÖĞµÄERRÈÕÖ¾µ½errorÎÄ¼ş
+zgrep -a 'ipswitch' hlb_last_cover_* | grep 'dx_fujian'    #tar.gzåŒ…çš„å†…å®¹æŸ¥çœ‹ï¼Œæ— éœ€è§£å‹
 
-É¸Ñ¡¡¢°´Ö¸¶¨Ë³ĞòÆ´½Ó£¬Í¨¹ı@·ûºÅÆ´½Ó
+----------sedè¿‡æ»¤æ›¿æ¢å’Œsortæ’åº----------------
+sedçš„æ‰€æœ‰æ“ä½œä¼šé»˜è®¤å°†ç»“æœè¾“å‡ºå±å¹•ï¼Œè€Œä¸ä¼šä¿®æ”¹åˆ°æºæ–‡ä»¶ï¼Œè‹¥è¦è¾“å‡ºåˆ°æ–‡ä»¶ï¼Œè¯·ä½¿ç”¨ï¼š> /usr/local/temp/file
+/pè¡¨ç¤ºæ‰“å°  /dè¡¨ç¤ºåˆ é™¤  /sè¡¨ç¤ºæ›¿æ¢
+sed 's/book/books' demo.log   #åœ¨æ¯ä¸ªè¾“å…¥è¡Œä¸­, å°†ç¬¬ä¸€ä¸ªå‡ºç°çš„"book"æ›¿æ¢ä¸º"books",ä¸ä¼šä¿®æ”¹åˆ°æºæ–‡ä»¶
+sed 's/book/books/g' demo.log   #åœ¨æ¯ä¸ªè¾“å…¥è¡Œä¸­ï¼Œå°†æ‰€æœ‰"book"æ›¿æ¢ä¸º"books"ï¼Œ/gè¡¨ç¤ºæ›¿æ¢æ¯è¡Œä¸­çš„æ‰€æœ‰åŒ¹é…,ä¸ä¼šä¿®æ”¹åˆ°æºæ–‡ä»¶
+sed -i 's/book/books/g' demo.log   #åœ¨æ¯ä¸ªè¾“å…¥è¡Œä¸­ï¼Œå°†æ‰€æœ‰"book"æ›¿æ¢ä¸º"books"ï¼Œ/gè¡¨ç¤ºæ›¿æ¢æ¯è¡Œä¸­çš„æ‰€æœ‰åŒ¹é…,-iç›´æ¥ä¿®æ”¹æºæ–‡ä»¶
+sed -i 's/\\//g' demo.log  #å°†æ‰€å¶é‡\ç¬¦å·æ›¿æ¢ä¸ºç©ºæ ¼ï¼Œ-iç›´æ¥ä¿®æ”¹æºæ–‡ä»¶
+
+sed /^$/d demo.log   #åˆ é™¤æ‰€æœ‰ç©ºè¡Œ
+sed 2d demo.log   #åˆ é™¤ç¬¬2è¡Œ
+sed -n '/error/p' demo.log   #åªæ‰“å°åŒ…å«errorçš„è¡Œ
+sed 's/ *$//' demo.log   #åˆ é™¤æ‰æ¯è¡Œç»“å°¾çš„æ‰€æœ‰ç©ºæ ¼
+sed 's/00*/0/g' demo.log   #å°†æ‰€æœ‰è¿ç»­å‡ºç°çš„0éƒ½å‹ç¼©æˆå•ä¸ª0
+sed '/ERROR/d' demo.log   #åˆ é™¤æ‰æ‰€æœ‰åŒ…å«"ERROR"çš„è¡Œ
+sed 's/ERROR//g' demo.log   #å°†æ‰€æœ‰"ERROR"åˆ é™¤æ‰ï¼Œå¹¶ä¿æŒå‰©ä½™éƒ¨åˆ†çš„å®Œæ•´æ€§
+
+sed -n '/^2018-02-24.*ERR/p'  dc_collect_request_data.log   #è¾“å‡ºæŒ‡å®šæ—¥æœŸä¸­çš„ERRæ—¥å¿—åˆ°å±å¹•
+sed -n '/^2018-02-24.*ERR/p'  dc_collect_request_data.log > /usr/local/temp/error   #è¾“å‡ºæŒ‡å®šæ—¥æœŸä¸­çš„ERRæ—¥å¿—åˆ°erroræ–‡ä»¶
+
+ç­›é€‰ã€æŒ‰æŒ‡å®šé¡ºåºæ‹¼æ¥ï¼Œé€šè¿‡@ç¬¦å·æ‹¼æ¥
 sed -n 's/^\([_-\: 0-9]\{19\}\).*\(INF\|ERR\).*\(FETCH_RP_DNSMAP_VIEW_THREAD\) \(start\|end\)/\1@\2@\3@\4/p' dc_collect_request_data.log
 2018-02-18_17:50:00@INF@FETCH_RP_DNSMAP_VIEW_THREAD@end 0
 2018-02-18_17:52:00@INF@FETCH_RP_DNSMAP_VIEW_THREAD@start
@@ -86,215 +86,215 @@ sed -n 's/^\([_-\: 0-9]\{19\}\).*\(INF\|ERR\).*FETCH_RP_DNSMAP_VIEW_THREAD \(sta
 2018-02-18_01:06:00@INF@start
 2018-02-18_01:06:00@INF@end 0
 
-sortÅÅĞò£¬ÅäºÏsedÊ¹ÓÃ
--t±íÊ¾Ö¸¶¨ÅÅÎ»Ê±ËùÓĞµÄÀ¸Î»·Ö¸î×Ö·û£¬ÕâÀïÎª@
--k±íÊ¾ĞèÒª½øĞĞÅÅÎ»µÄÀ¸Î»»òÓò£¬ÕâÀïÏÈ°´ÈÕÖ¾¼¶±ğÅÅĞò£¨2À¸Î»£©£¬È»ºóÔÙ°´Ê±¼äÅÅĞò£¨1À¸Î»£©
--n±íÊ¾°´Êı×Ö´óĞ¡ÅÅĞò
--rÊÇÒÔÏà·´Ë³ĞòÅÅĞò
+sortæ’åºï¼Œé…åˆsedä½¿ç”¨
+-tè¡¨ç¤ºæŒ‡å®šæ’ä½æ—¶æ‰€æœ‰çš„æ ä½åˆ†å‰²å­—ç¬¦ï¼Œè¿™é‡Œä¸º@
+-kè¡¨ç¤ºéœ€è¦è¿›è¡Œæ’ä½çš„æ ä½æˆ–åŸŸï¼Œè¿™é‡Œå…ˆæŒ‰æ—¥å¿—çº§åˆ«æ’åºï¼ˆ2æ ä½ï¼‰ï¼Œç„¶åå†æŒ‰æ—¶é—´æ’åºï¼ˆ1æ ä½ï¼‰
+-nè¡¨ç¤ºæŒ‰æ•°å­—å¤§å°æ’åº
+-ræ˜¯ä»¥ç›¸åé¡ºåºæ’åº
 sed -n 's/^\([_-\: 0-9]\{19\}\).*\(INF\|ERR\).*FETCH_RP_DNSMAP_VIEW_THREAD \(start\|end\)/\1@\2@\3/p' dc_collect_request_data.log | sort -t@ -k2,2r -k1,1
 
-------------awkÍ³¼Æ--------------------------------
-ÒÔÉÏÊösortºóµÄ½á¹ûÎªÊäÈë£¬±£´æÎÄ¼şÎªinfo_error.log
-awkÊÇ»á±éÀúÎÄ¼şÖĞËùÓĞµÄĞĞ
-awk 'BEGIN{FS="@"} {print $1,$2}' info_error.log   #BEGINÎªÔ¤´¦Àí£¬°Ñ@ºÅ×÷ÎªĞĞµÄÁĞ·Ö¸ô·û£¬°Ñ·Ö¸îºóµÄĞĞµÄµÚ1,2ÁĞÊä³ö
+------------awkç»Ÿè®¡--------------------------------
+ä»¥ä¸Šè¿°sortåçš„ç»“æœä¸ºè¾“å…¥ï¼Œä¿å­˜æ–‡ä»¶ä¸ºinfo_error.log
+awkæ˜¯ä¼šéå†æ–‡ä»¶ä¸­æ‰€æœ‰çš„è¡Œ
+awk 'BEGIN{FS="@"} {print $1,$2}' info_error.log   #BEGINä¸ºé¢„å¤„ç†ï¼ŒæŠŠ@å·ä½œä¸ºè¡Œçš„åˆ—åˆ†éš”ç¬¦ï¼ŒæŠŠåˆ†å‰²åçš„è¡Œçš„ç¬¬1,2åˆ—è¾“å‡º
 2018-02-24_15:14:00 INF
 2018-02-24_15:14:00 INF
 2018-02-24_15:16:00 INF
-awk 'BEGIN{FS="@"} {if ($2 == "INF"){info_count++}} END{printf("INF count:%d\n", info_count)}' info_error.log   #Í³¼ÆINF³öÏÖµÄ×ÜĞĞÊı
-netstat -ant | grep ":54104" | awk '{print $NF}' | sort | uniq -c  | sort -nr  ²é¿´¶Ë¿Ú54104,$NF±íÊ¾×îºóÒ»¸ö×Ö¶Î,ÓÃsortÃüÁîÅÅĞò,ÓÃuniqÃüÁîÍ³¼Æ(c),×îºó°´ÊıÖµ(n)µ¹Ğò(r)ÅÅÁĞ
-netstat -ant | grep ":54104" | awk '/^tcp/{++S[$4]} END {for(a in S) print a,S[a]}' | sort -nr -k 2 -t ' '   ²é¿´¶Ë¿ÚºÅ54104£¬/^tcp/±íÊ¾ÒÔtcp¿ªÍ·µÄ£¬Í³¼ÆµÚ4ÁĞµÄ×ÜÊı
-netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'  Ö»Í³¼Ætcp¿ªÍ·,Í³¼Æ×îºóÒ»ĞĞ³öÏÖµÄ×ÜÊı²¢´òÓ¡
-ifconfig | awk '/inet addr/ {print($2)}'  /inet addr/±íÊ¾¹ıÂË³öinet addr¿ªÍ·µÄĞĞ£¬print($2)±íÊ¾´òÓ¡¹ıÂË³öµÄĞĞµÄµÚ2ÁĞÊı¾İ
+awk 'BEGIN{FS="@"} {if ($2 == "INF"){info_count++}} END{printf("INF count:%d\n", info_count)}' info_error.log   #ç»Ÿè®¡INFå‡ºç°çš„æ€»è¡Œæ•°
+netstat -ant | grep ":54104" | awk '{print $NF}' | sort | uniq -c  | sort -nr  æŸ¥çœ‹ç«¯å£54104,$NFè¡¨ç¤ºæœ€åä¸€ä¸ªå­—æ®µ,ç”¨sortå‘½ä»¤æ’åº,ç”¨uniqå‘½ä»¤ç»Ÿè®¡(c),æœ€åæŒ‰æ•°å€¼(n)å€’åº(r)æ’åˆ—
+netstat -ant | grep ":54104" | awk '/^tcp/{++S[$4]} END {for(a in S) print a,S[a]}' | sort -nr -k 2 -t ' '   æŸ¥çœ‹ç«¯å£å·54104ï¼Œ/^tcp/è¡¨ç¤ºä»¥tcpå¼€å¤´çš„ï¼Œç»Ÿè®¡ç¬¬4åˆ—çš„æ€»æ•°
+netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'  åªç»Ÿè®¡tcpå¼€å¤´,ç»Ÿè®¡æœ€åä¸€è¡Œå‡ºç°çš„æ€»æ•°å¹¶æ‰“å°
+ifconfig | awk '/inet addr/ {print($2)}'  /inet addr/è¡¨ç¤ºè¿‡æ»¤å‡ºinet addrå¼€å¤´çš„è¡Œï¼Œprint($2)è¡¨ç¤ºæ‰“å°è¿‡æ»¤å‡ºçš„è¡Œçš„ç¬¬2åˆ—æ•°æ®
 
-------------fifo¹ÜµÀÎÄ¼şÃüÁî---------------
-mkfifo test.fifo  ´´½¨¹ÜµÀÎÄ¼ş
-cat test.fifio  cat¹ÜµÀ£¬µ±·şÎñ¶ËÏò¸Ã¹ÜµÀĞ´Êı¾İÊ±£¬¿ÉÒÔcatµ½Êı¾İ£¬·şÎñ¶ËĞ´ÍêÊı¾İºóÂíÉÏ¹Ø±Õ¹ÜµÀ£¬Ôòcat½ø³ÌÒ²»áÂíÉÏÍË³ö¡£Èô·şÎñ¶ËÒ»Ö±Ïò¹ÜµÀĞ´Êı¾İ£¬¶øÃ»ÓĞ¿Í»§¶Ëcat£¬Ôò»áÔì³É¹ÜµÀ×èÈû
-
-
-------------moreÃüÁî--------------------------------
-more +20 test.txt    #´ÓµÚ20ĞĞ¿ªÊ¼ÏÔÊ¾
-more -4 test.txt    #·ÖÒ³ÏÔÊ¾£¬Ã¿Ò³ÏÔÊ¾4ĞĞ£¬°´¿Õ¸ñ·ÖÒ³
-
-------------vimÖĞËÑË÷--------------------------------
-/xxx£º±íÊ¾´ÓÍ·¿ªÊ¼ËÑË÷×Ö·û´®xxx
-?xxx£º±íÊ¾´ÓÄ©Î²¿ªÊ¼ËÑË÷×Ö·û´®xxx
-ËÑË÷µ½µÚÒ»¸öºó£¬»á¸ßÁÁÏÔÊ¾ËùÓĞÆ¥ÅäÏî£¬°´nÏÂÒ»¸ö£¬°´NÉÏÒ»¸ö
+------------fifoç®¡é“æ–‡ä»¶å‘½ä»¤---------------
+mkfifo test.fifo  åˆ›å»ºç®¡é“æ–‡ä»¶
+cat test.fifio  catç®¡é“ï¼Œå½“æœåŠ¡ç«¯å‘è¯¥ç®¡é“å†™æ•°æ®æ—¶ï¼Œå¯ä»¥catåˆ°æ•°æ®ï¼ŒæœåŠ¡ç«¯å†™å®Œæ•°æ®åé©¬ä¸Šå…³é—­ç®¡é“ï¼Œåˆ™catè¿›ç¨‹ä¹Ÿä¼šé©¬ä¸Šé€€å‡ºã€‚è‹¥æœåŠ¡ç«¯ä¸€ç›´å‘ç®¡é“å†™æ•°æ®ï¼Œè€Œæ²¡æœ‰å®¢æˆ·ç«¯catï¼Œåˆ™ä¼šé€ æˆç®¡é“é˜»å¡
 
 
----------------½âÑ¹Ëõ----------------
-tar -czf test.tar.gz *.txt   #´ò°üÒÔ.txt½áÎ²µÄÎÄ¼ş£¬ÃüÃûÎªtest.tar.gz
-tar jcvf test.tar.bz2 1.txt 2.txt  #´ò°ü³Étar.bz2Ñ¹Ëõ°ü
-tar -zxvf test.tar.gz    #½âÑ¹
-tar -jxvf test.tar.gz    #½âÑ¹
-tar xvf test.tgz  #½âÑ¹
-zip -rq all.zip file1 file2 file3  #Ñ¹Ëõ³Ézip°ü£¬°üÀ¨×ÓÄ¿Â¼µÄËùÓĞÎÄ¼ş
-unzip all.zip  ½âÑ¹ÎÄ¼şµ½µ±Ç°Ä¿Â¼
-unzip all.zip -d /usr/local/tmp  °ÑÎÄ¼ş½âÑ¹µ½/usr/local/tmpÄ¿Â¼
+------------moreå‘½ä»¤--------------------------------
+more +20 test.txt    #ä»ç¬¬20è¡Œå¼€å§‹æ˜¾ç¤º
+more -4 test.txt    #åˆ†é¡µæ˜¾ç¤ºï¼Œæ¯é¡µæ˜¾ç¤º4è¡Œï¼ŒæŒ‰ç©ºæ ¼åˆ†é¡µ
 
-----------¶¨Ê±ÈÎÎñ------------
-¶¨Ê±ÈÎÎñÈÕÖ¾ÎÄ¼ş£º/var/log/cron
-
-crontab -e  #ĞŞ¸Ä¶¨Ê±ÈÎÎñ
-crontab -l£ºÏÔÊ¾ËùÓĞµÄ¶¨Ê±ÈÎÎñĞÅÏ¢
-crontab -l -u tomcat: ÏÔÊ¾tomcatÓÃ»§µÄ¶¨Ê±ÈÎÎñĞÅÏ¢
-tail -f /var/log/cron£ºÊµÊ±²é¿´ËùÓĞ¶¨Ê±ÈÎÎñµÄÖ´ĞĞÇé¿ö
-
-crond·şÎñ
-/sbin/service crond start    //Æô¶¯·şÎñ
-/sbin/service crond stop     //¹Ø±Õ·şÎñ
-/sbin/service crond restart  //ÖØÆô·şÎñ
-/sbin/service crond reload   //ÖØĞÂÔØÈëÅäÖÃ
-²é¿´crontab·şÎñ×´Ì¬£ºservice crond status
-ÊÖ¶¯Æô¶¯crontab·şÎñ£ºservice crond start
-²é¿´crontab·şÎñÊÇ·ñÒÑÉèÖÃÎª¿ª»úÆô¶¯£¬Ö´ĞĞÃüÁî£ºntsysv
-¼ÓÈë¿ª»ú×Ô¶¯Æô¶¯£º
-chkconfig ¨Clevel 35 crond on
-
------------·şÎñÆ÷Ê±¼ä----------------
-date   #²é¿´·şÎñÆ÷Ê±¼ä
-date -d @1531952792  #Ê±¼ä¸ñÊ½»¯
-yum install ntpupdate   #°²×°Ê±¼äÍ¬²½²å¼ş
-ntpupdate 0.asia.pool.ntp.org  #Í¬²½±±¾©Ê±¼ä
-
---------------lsofÃüÁî---------------------
-yum install lsof£ºÈôÖ§³Ö¸ÃÃüÁîÔòĞèÒª°²×°
-lsof -i:6379  #²é¿´¶Ë¿ÚÊ¹ÓÃÇé¿ö
-
---------------netstatÃüÁî---------------------
-netstat -tunlp|grep 8080    #²é¿´¶Ë¿ÚÕ¼ÓÃÇé¿ö
-netstat -plt  ²é¿´ËùÓĞ¶Ë¿ÚĞÅÏ¢
-netstat -ant | head -3  ÏÔÊ¾Ç°3ÌõÍøÂçÁ´½ÓÇé¿ö
-netstat -antp | grep 18374 | head -3  ÏÔÊ¾½ø³ÌIDºÍ³ÌĞòÃû(p),È»ºóÓÃgrepÃüÁîÕÒ³ö½ø³Ì18374,È»ºóÓÃheadÃüÁîÏÔÊ¾Ç°3ĞĞ
-netstat -ant | grep ":54104" | wc -l   ²é¿´¶Ë¿ÚºÅÎª54104µÄÁ´½ÓÊı
-netstat -ant | grep ":54104" | awk '{print $NF}' | sort | uniq -c  | sort -nr  ²é¿´¶Ë¿Ú54104,$NF±íÊ¾×îºóÒ»¸ö×Ö¶Î,ÓÃsortÃüÁîÅÅĞò,ÓÃuniqÃüÁîÍ³¼Æ(c),×îºó°´ÊıÖµ(n)µ¹Ğò(r)ÅÅÁĞ
-netstat -ant | grep ":54104" | awk '/^tcp/{++S[$4]} END {for(a in S) print a,S[a]}' | sort -nr -k 2 -t ' '   ²é¿´¶Ë¿ÚºÅ54104£¬/^tcp/±íÊ¾ÒÔtcp¿ªÍ·µÄ£¬Í³¼ÆµÚ4ÁĞµÄ×ÜÊı
-netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'  Ö»Í³¼Ætcp¿ªÍ·,Í³¼Æ×îºóÒ»ĞĞ³öÏÖµÄ×ÜÊı²¢´òÓ¡
+------------vimä¸­æœç´¢--------------------------------
+/xxxï¼šè¡¨ç¤ºä»å¤´å¼€å§‹æœç´¢å­—ç¬¦ä¸²xxx
+?xxxï¼šè¡¨ç¤ºä»æœ«å°¾å¼€å§‹æœç´¢å­—ç¬¦ä¸²xxx
+æœç´¢åˆ°ç¬¬ä¸€ä¸ªåï¼Œä¼šé«˜äº®æ˜¾ç¤ºæ‰€æœ‰åŒ¹é…é¡¹ï¼ŒæŒ‰nä¸‹ä¸€ä¸ªï¼ŒæŒ‰Nä¸Šä¸€ä¸ª
 
 
---------------×é¡¢ÓÃ»§²Ù×÷-----------------
-groupadd test   #Ìí¼Ó×étest
-cat /etc/group   #²é¿´µ±Ç°ÏµÍ³ËùÓĞ×é
-chgrp test test.txt   #ĞŞ¸Ätest.txtµÄ×éÎªtest×é
-useradd test -g test   #´´½¨ÓÃ»§test£¬¹éÊôÓÚtest×é
-usermod -aG docker $USER  #½«ÓÃ»§$USER¼ÓÈëdocker×é
-passwd test 123456   #ÉèÖÃtestÓÃ»§ÃÜÂëÎª123456
-su test   #ÇĞ»»µ½testÓÃ»§
-cat /etc/passwd  #²é¿´µ±Ç°ÏµÍ³ËùÓĞÓÃ»§
-userdel test   #É¾³ıÓÃ»§
-id -nu tomcat£ºÈ·ÈÏtomcatÓÃ»§ÊÇ·ñ´æÔÚ
-groups tomcat£º²é¿´tomcatÓÃ»§ËùÊôµÄ×é
-chown -R tomcat:tomcat /usr/local/tomcat7  #ÉèÖÃ/usr/local/tomcat7Îªtomcat×éÏÂµÄtomcatÓÃ»§
+---------------è§£å‹ç¼©----------------
+tar -czf test.tar.gz *.txt   #æ‰“åŒ…ä»¥.txtç»“å°¾çš„æ–‡ä»¶ï¼Œå‘½åä¸ºtest.tar.gz
+tar jcvf test.tar.bz2 1.txt 2.txt  #æ‰“åŒ…æˆtar.bz2å‹ç¼©åŒ…
+tar -zxvf test.tar.gz    #è§£å‹
+tar -jxvf test.tar.gz    #è§£å‹
+tar xvf test.tgz  #è§£å‹
+zip -rq all.zip file1 file2 file3  #å‹ç¼©æˆzipåŒ…ï¼ŒåŒ…æ‹¬å­ç›®å½•çš„æ‰€æœ‰æ–‡ä»¶
+unzip all.zip  è§£å‹æ–‡ä»¶åˆ°å½“å‰ç›®å½•
+unzip all.zip -d /usr/local/tmp  æŠŠæ–‡ä»¶è§£å‹åˆ°/usr/local/tmpç›®å½•
 
-ĞŞ¸ÄÓÃ»§ÃÜÂë
+----------å®šæ—¶ä»»åŠ¡------------
+å®šæ—¶ä»»åŠ¡æ—¥å¿—æ–‡ä»¶ï¼š/var/log/cron
+
+crontab -e  #ä¿®æ”¹å®šæ—¶ä»»åŠ¡
+crontab -lï¼šæ˜¾ç¤ºæ‰€æœ‰çš„å®šæ—¶ä»»åŠ¡ä¿¡æ¯
+crontab -l -u tomcat: æ˜¾ç¤ºtomcatç”¨æˆ·çš„å®šæ—¶ä»»åŠ¡ä¿¡æ¯
+tail -f /var/log/cronï¼šå®æ—¶æŸ¥çœ‹æ‰€æœ‰å®šæ—¶ä»»åŠ¡çš„æ‰§è¡Œæƒ…å†µ
+
+crondæœåŠ¡
+/sbin/service crond start    //å¯åŠ¨æœåŠ¡
+/sbin/service crond stop     //å…³é—­æœåŠ¡
+/sbin/service crond restart  //é‡å¯æœåŠ¡
+/sbin/service crond reload   //é‡æ–°è½½å…¥é…ç½®
+æŸ¥çœ‹crontabæœåŠ¡çŠ¶æ€ï¼šservice crond status
+æ‰‹åŠ¨å¯åŠ¨crontabæœåŠ¡ï¼šservice crond start
+æŸ¥çœ‹crontabæœåŠ¡æ˜¯å¦å·²è®¾ç½®ä¸ºå¼€æœºå¯åŠ¨ï¼Œæ‰§è¡Œå‘½ä»¤ï¼šntsysv
+åŠ å…¥å¼€æœºè‡ªåŠ¨å¯åŠ¨ï¼š
+chkconfig â€“level 35 crond on
+
+-----------æœåŠ¡å™¨æ—¶é—´----------------
+date   #æŸ¥çœ‹æœåŠ¡å™¨æ—¶é—´
+date -d @1531952792  #æ—¶é—´æ ¼å¼åŒ–
+yum install ntpupdate   #å®‰è£…æ—¶é—´åŒæ­¥æ’ä»¶
+ntpupdate 0.asia.pool.ntp.org  #åŒæ­¥åŒ—äº¬æ—¶é—´
+
+--------------lsofå‘½ä»¤---------------------
+yum install lsofï¼šè‹¥æ”¯æŒè¯¥å‘½ä»¤åˆ™éœ€è¦å®‰è£…
+lsof -i:6379  #æŸ¥çœ‹ç«¯å£ä½¿ç”¨æƒ…å†µ
+
+--------------netstatå‘½ä»¤---------------------
+netstat -tunlp|grep 8080    #æŸ¥çœ‹ç«¯å£å ç”¨æƒ…å†µ
+netstat -plt  æŸ¥çœ‹æ‰€æœ‰ç«¯å£ä¿¡æ¯
+netstat -ant | head -3  æ˜¾ç¤ºå‰3æ¡ç½‘ç»œé“¾æ¥æƒ…å†µ
+netstat -antp | grep 18374 | head -3  æ˜¾ç¤ºè¿›ç¨‹IDå’Œç¨‹åºå(p),ç„¶åç”¨grepå‘½ä»¤æ‰¾å‡ºè¿›ç¨‹18374,ç„¶åç”¨headå‘½ä»¤æ˜¾ç¤ºå‰3è¡Œ
+netstat -ant | grep ":54104" | wc -l   æŸ¥çœ‹ç«¯å£å·ä¸º54104çš„é“¾æ¥æ•°
+netstat -ant | grep ":54104" | awk '{print $NF}' | sort | uniq -c  | sort -nr  æŸ¥çœ‹ç«¯å£54104,$NFè¡¨ç¤ºæœ€åä¸€ä¸ªå­—æ®µ,ç”¨sortå‘½ä»¤æ’åº,ç”¨uniqå‘½ä»¤ç»Ÿè®¡(c),æœ€åæŒ‰æ•°å€¼(n)å€’åº(r)æ’åˆ—
+netstat -ant | grep ":54104" | awk '/^tcp/{++S[$4]} END {for(a in S) print a,S[a]}' | sort -nr -k 2 -t ' '   æŸ¥çœ‹ç«¯å£å·54104ï¼Œ/^tcp/è¡¨ç¤ºä»¥tcpå¼€å¤´çš„ï¼Œç»Ÿè®¡ç¬¬4åˆ—çš„æ€»æ•°
+netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'  åªç»Ÿè®¡tcpå¼€å¤´,ç»Ÿè®¡æœ€åä¸€è¡Œå‡ºç°çš„æ€»æ•°å¹¶æ‰“å°
+
+
+--------------ç»„ã€ç”¨æˆ·æ“ä½œ-----------------
+groupadd test   #æ·»åŠ ç»„test
+cat /etc/group   #æŸ¥çœ‹å½“å‰ç³»ç»Ÿæ‰€æœ‰ç»„
+chgrp test test.txt   #ä¿®æ”¹test.txtçš„ç»„ä¸ºtestç»„
+useradd test -g test   #åˆ›å»ºç”¨æˆ·testï¼Œå½’å±äºtestç»„
+usermod -aG docker $USER  #å°†ç”¨æˆ·$USERåŠ å…¥dockerç»„
+passwd test 123456   #è®¾ç½®testç”¨æˆ·å¯†ç ä¸º123456
+su test   #åˆ‡æ¢åˆ°testç”¨æˆ·
+cat /etc/passwd  #æŸ¥çœ‹å½“å‰ç³»ç»Ÿæ‰€æœ‰ç”¨æˆ·
+userdel test   #åˆ é™¤ç”¨æˆ·
+id -nu tomcatï¼šç¡®è®¤tomcatç”¨æˆ·æ˜¯å¦å­˜åœ¨
+groups tomcatï¼šæŸ¥çœ‹tomcatç”¨æˆ·æ‰€å±çš„ç»„
+chown -R tomcat:tomcat /usr/local/tomcat7  #è®¾ç½®/usr/local/tomcat7ä¸ºtomcatç»„ä¸‹çš„tomcatç”¨æˆ·
+
+ä¿®æ”¹ç”¨æˆ·å¯†ç 
 chattr -i /etc/passwd
 chattr -i /etc/shadow
-useradd test  #ĞŞ¸ÄÓÃ»§ÃÜÂë
+useradd test  #ä¿®æ”¹ç”¨æˆ·å¯†ç 
 chattr +i /etc/passwd
 chattr +i /etc/shadow
 
 
----------ÎÄ¼şÈ¨ÏŞ-------------
-ÎÄ¼ş»òÄ¿Â¼µÄÈ¨ÏŞrwxrwxrwxËµÃ÷£ºrootÈ¨ÏŞ¡¢×éÈ¨ÏŞ¡¢ÆäËûÓÃ»§È¨ÏŞ
-chmod 777 test.txt  #ĞŞ¸ÄÎÄ¼şµÄÈ¨ÏŞ
+---------æ–‡ä»¶æƒé™-------------
+æ–‡ä»¶æˆ–ç›®å½•çš„æƒé™rwxrwxrwxè¯´æ˜ï¼šrootæƒé™ã€ç»„æƒé™ã€å…¶ä»–ç”¨æˆ·æƒé™
+chmod 777 test.txt  #ä¿®æ”¹æ–‡ä»¶çš„æƒé™
 
---------------------findÃüÁî--------------
-find / -name mysql  #ÔÚ¸ùÄ¿Â¼ÏÂÑ°ÕÒmysql
-find /usr/local -name mysql #ÔÚ/usr/localÄ¿Â¼ÏÂÑ°ÕÒmysql
-find . -name "*.txt"    #ÔÚµ±Ç°Ä¿Â¼ÏÂÑ°ÕÒÒÔtxt½áÎ²µÄÎÄ¼ş
+--------------------findå‘½ä»¤--------------
+find / -name mysql  #åœ¨æ ¹ç›®å½•ä¸‹å¯»æ‰¾mysql
+find /usr/local -name mysql #åœ¨/usr/localç›®å½•ä¸‹å¯»æ‰¾mysql
+find . -name "*.txt"    #åœ¨å½“å‰ç›®å½•ä¸‹å¯»æ‰¾ä»¥txtç»“å°¾çš„æ–‡ä»¶
 
 
-----------------½ø³Ì²Ù×÷---------------------
-ps -ef|grep java£º²é¿´½ø³Ì
-ps aux|grep java£º²é¿´½ø³Ì
+----------------è¿›ç¨‹æ“ä½œ---------------------
+ps -ef|grep javaï¼šæŸ¥çœ‹è¿›ç¨‹
+ps aux|grep javaï¼šæŸ¥çœ‹è¿›ç¨‹
 chkconfig mysql on
 chkconfig mysql off
 
 whereis mysql
 
-service mysql start£ºÆô¶¯mysql
-service mysql stop£ºÍ£Ö¹mysql
-service mysql restart£ºÖØÆômysql
+service mysql startï¼šå¯åŠ¨mysql
+service mysql stopï¼šåœæ­¢mysql
+service mysql restartï¼šé‡å¯mysql
 
-²é¿´²Ù×÷ÏµÍ³£ºlsb_release -a
+æŸ¥çœ‹æ“ä½œç³»ç»Ÿï¼šlsb_release -a
 	          uname -a
 
------------------ÎÄ¼şÃüÁî----------------
-touch text.txt   #´´½¨¿ÕÎÄ¼ş
-		  
-		  
---------------rpmÃüÁî---------------------		  
-rpmÃüÁî£ºrpmÈí¼ş°üµÄ°²×°Ğ¶ÔØ
-java -version  //²é¿´ÊÇ·ñ°²×°ÁËjdk£¬°æ±¾ÊÇ¶àÉÙ
-rpm -qa  //²é¿´ÒÑ¾­°²×°µÄËùÓĞÈí¼ş°üĞÅÏ¢
-rpm -qa |grep jdk   //²é¿´°²×°µÄjdkÈí¼ş°üĞÅÏ¢
-rpm -e xxx   //Ğ¶ÔØÈí¼ş
-rpm -ivh xxx.rpm   //°²×°rpm°ü
-
---------------yumÃüÁî---------------------	
-yum install vim   #°²×°vim¼°ÆäËùÓĞÒÀÀµ°ü£¬°²×°°ü¶¼ÊÇrpm°ü
-yum remove vim  #Ğ¶ÔØvim¼°ÆäËùÓĞÒÀÀµ°ü
-yumÔ´ÅäÖÃÎÄ¼şËùÔÚµÄÎÄ¼ş¼Ğ£º/etc/yum.repos.d/
-Ìí¼Ódocker-ce¾µÏñÔ´£º  yum-config-manager --add-repo https://mirrors.ustc.edu.cn/docker-ce/linux/centos/docker-ce.repo
+-----------------æ–‡ä»¶å‘½ä»¤----------------
+touch text.txt   #åˆ›å»ºç©ºæ–‡ä»¶
 
 
---------Ô¶³Ì·ÃÎÊÏÂÔØÃüÁî--------------------
-wget http://xxx    #Ô¶³ÌÏÂÔØÎÄ¼ş
-curl www.baidu.com   #Ô¶³Ì·ÃÎÊurl£¬»ñÈ¡Ò³ÃæĞÅÏ¢
-curl -O http://xxx /usr/local/temp    #Ô¶³ÌÏÂÔØÎÄ¼ş
+--------------rpmå‘½ä»¤---------------------
+rpmå‘½ä»¤ï¼šrpmè½¯ä»¶åŒ…çš„å®‰è£…å¸è½½
+java -version  //æŸ¥çœ‹æ˜¯å¦å®‰è£…äº†jdkï¼Œç‰ˆæœ¬æ˜¯å¤šå°‘
+rpm -qa  //æŸ¥çœ‹å·²ç»å®‰è£…çš„æ‰€æœ‰è½¯ä»¶åŒ…ä¿¡æ¯
+rpm -qa |grep jdk   //æŸ¥çœ‹å®‰è£…çš„jdkè½¯ä»¶åŒ…ä¿¡æ¯
+rpm -e xxx   //å¸è½½è½¯ä»¶
+rpm -ivh xxx.rpm   //å®‰è£…rpmåŒ…
+
+--------------yumå‘½ä»¤---------------------
+yum install vim   #å®‰è£…vimåŠå…¶æ‰€æœ‰ä¾èµ–åŒ…ï¼Œå®‰è£…åŒ…éƒ½æ˜¯rpmåŒ…
+yum remove vim  #å¸è½½vimåŠå…¶æ‰€æœ‰ä¾èµ–åŒ…
+yumæºé…ç½®æ–‡ä»¶æ‰€åœ¨çš„æ–‡ä»¶å¤¹ï¼š/etc/yum.repos.d/
+æ·»åŠ docker-ceé•œåƒæºï¼š  yum-config-manager --add-repo https://mirrors.ustc.edu.cn/docker-ce/linux/centos/docker-ce.repo
+
+
+--------è¿œç¨‹è®¿é—®ä¸‹è½½å‘½ä»¤--------------------
+wget http://xxx    #è¿œç¨‹ä¸‹è½½æ–‡ä»¶
+curl www.baidu.com   #è¿œç¨‹è®¿é—®urlï¼Œè·å–é¡µé¢ä¿¡æ¯
+curl -O http://xxx /usr/local/temp    #è¿œç¨‹ä¸‹è½½æ–‡ä»¶
 
 
 
--------------centos6·À»ğÇ½-----------------------
-yum install firewalld  #°²×°·À»ğÇ½
-service firewalld status  #²é¿´·À»ğÇ½×´Ì¬
-service firewalld stop  #¹Ø±Õ·À»ğÇ½
+-------------centos6é˜²ç«å¢™-----------------------
+yum install firewalld  #å®‰è£…é˜²ç«å¢™
+service firewalld status  #æŸ¥çœ‹é˜²ç«å¢™çŠ¶æ€
+service firewalld stop  #å…³é—­é˜²ç«å¢™
 
 
---------------ÏµÍ³ÃüÁî--------------
-lsb_release -a  #²é¿´²Ù×÷ÏµÍ³
-uname -a  #²é¿´²Ù×÷ÏµÍ³
-init 0  #¹Ø»ú
-init 6  #ÖØÆô
-free -m   #²é¿´ÄÚ´æÊ¹ÓÃÇé¿ö£¬µ¥Î»MB
+--------------ç³»ç»Ÿå‘½ä»¤--------------
+lsb_release -a  #æŸ¥çœ‹æ“ä½œç³»ç»Ÿ
+uname -a  #æŸ¥çœ‹æ“ä½œç³»ç»Ÿ
+init 0  #å…³æœº
+init 6  #é‡å¯
+free -m   #æŸ¥çœ‹å†…å­˜ä½¿ç”¨æƒ…å†µï¼Œå•ä½MB
 free -h
-df -h  #²é¿´´ÅÅÌÊ¹ÓÃÇé¿ö
-du -h  #²é¿´µ±Ç°Ä¿Â¼ÏÂËùÓĞÎÄ¼ş¼ĞµÄ´ÅÅÌÕ¼ÓÃÇé¿ö
-lsblk  #²é¿´µ±Ç°¹ÒÔØµÄ´ÅÅÌ
-fdisk -l  #²é¿´ÅÌ·û·ÖÅäÇé¿ö
-ifconfig   #²é¿´IPµÈĞÅÏ¢
-lscpu   #²é¿´µÄÊÇcpuµÄÍ³¼ÆĞÅÏ¢
+df -h  #æŸ¥çœ‹ç£ç›˜ä½¿ç”¨æƒ…å†µ
+du -h  #æŸ¥çœ‹å½“å‰ç›®å½•ä¸‹æ‰€æœ‰æ–‡ä»¶å¤¹çš„ç£ç›˜å ç”¨æƒ…å†µ
+lsblk  #æŸ¥çœ‹å½“å‰æŒ‚è½½çš„ç£ç›˜
+fdisk -l  #æŸ¥çœ‹ç›˜ç¬¦åˆ†é…æƒ…å†µ
+ifconfig   #æŸ¥çœ‹IPç­‰ä¿¡æ¯
+lscpu   #æŸ¥çœ‹çš„æ˜¯cpuçš„ç»Ÿè®¡ä¿¡æ¯
 blue@blue-pc:~$ lscpu
-Architecture:          i686          #cpu¼Ü¹¹
+Architecture:          i686          #cpuæ¶æ„
 CPU op-mode(s):        32-bit, 64-bit
-Byte Order:            Little Endian   #Ğ¡Î²Ğò
-CPU(s):                4            #×Ü¹²ÓĞ4ºË
+Byte Order:            Little Endian   #å°å°¾åº
+CPU(s):                4            #æ€»å…±æœ‰4æ ¸
 On-line CPU(s) list:   0-3
-Thread(s) per core:    1              #Ã¿¸öcpuºË£¬Ö»ÄÜÖ§³ÖÒ»¸öÏß³Ì£¬¼´²»Ö§³Ö³¬Ïß³Ì
-Core(s) per socket:    4               #Ã¿¸öcpu£¬ÓĞ4¸öºË
-Socket(s):             1              #×Ü¹²ÓĞ1Ò»¸öcpu
-Vendor ID:             GenuineIntel    #cpu²úÉÌ intel
+Thread(s) per core:    1              #æ¯ä¸ªcpuæ ¸ï¼Œåªèƒ½æ”¯æŒä¸€ä¸ªçº¿ç¨‹ï¼Œå³ä¸æ”¯æŒè¶…çº¿ç¨‹
+Core(s) per socket:    4               #æ¯ä¸ªcpuï¼Œæœ‰4ä¸ªæ ¸
+Socket(s):             1              #æ€»å…±æœ‰1ä¸€ä¸ªcpu
+Vendor ID:             GenuineIntel    #cpuäº§å•† intel
 CPU family:            6
 Model:                 42
 Stepping:              7
 CPU MHz:               1600.000
 BogoMIPS:              5986.12
-Virtualization:        VT-x             #Ö§³ÖcpuĞéÄâ»¯¼¼Êõ
+Virtualization:        VT-x             #æ”¯æŒcpuè™šæ‹ŸåŒ–æŠ€æœ¯
 L1d cache:             32K
 L1i cache:             32K
 L2 cache:              256K
 L3 cache:              6144K
 
-cat /proc/cpuinfo    #¸öcpuĞÅÏ¢£¬ÈçÃ¿¸öCPUµÄĞÍºÅ£¬Ö÷ÆµµÈ
+cat /proc/cpuinfo    #ä¸ªcpuä¿¡æ¯ï¼Œå¦‚æ¯ä¸ªCPUçš„å‹å·ï¼Œä¸»é¢‘ç­‰
 processor    : 0
 vendor_id    : GenuineIntel
 cpu family    : 6
 model        : 42
 model name    : Intel(R) Core(TM) i5-2320 CPU @ 3.00GHz
 .....
-ÉÏÃæÊä³öµÄÊÇ¸öcpu²¿·ÖĞÅÏ¢£¬»¹ÓĞ3¸öcpuĞÅÏ¢Ê¡ÂÔÁË¡£
+ä¸Šé¢è¾“å‡ºçš„æ˜¯ä¸ªcpuéƒ¨åˆ†ä¿¡æ¯ï¼Œè¿˜æœ‰3ä¸ªcpuä¿¡æ¯çœç•¥äº†ã€‚
 
-top  #²é¿´ÄÚ´æºÍCPUÊ¹ÓÃÇé¿ö
-cat /proc/meminfo    #²é¿´ÄÚ´æÏêÏ¸Ê¹ÓÃÇé¿ö
+top  #æŸ¥çœ‹å†…å­˜å’ŒCPUä½¿ç”¨æƒ…å†µ
+cat /proc/meminfo    #æŸ¥çœ‹å†…å­˜è¯¦ç»†ä½¿ç”¨æƒ…å†µ
 MemTotal:        4020868 kB
 MemFree:          230884 kB
 Buffers:            7600 kB
@@ -302,7 +302,7 @@ Cached:           454772 kB
 SwapCached:          836 kB
 .....
 
-dmidecode -t memory   #²é¿´ÄÚ´æÓ²¼şĞÅÏ¢
+dmidecode -t memory   #æŸ¥çœ‹å†…å­˜ç¡¬ä»¶ä¿¡æ¯
 # dmidecode 2.11
 SMBIOS 2.7 present.
 Handle 0x0008, DMI type 16, 23 bytes
@@ -320,10 +320,10 @@ Memory Device
     Data Width: 64 bits
     Size: 4096 MB
 .....
-ÎÒµÄÖ÷°åÓĞ4¸ö²ÛÎ»£¬Ö»ÓÃÁËÒ»¸ö²ÛÎ»£¬ÉÏÃæ²åÁËÒ»Ìõ4096MBµÄÄÚ´æ¡£
+æˆ‘çš„ä¸»æ¿æœ‰4ä¸ªæ§½ä½ï¼Œåªç”¨äº†ä¸€ä¸ªæ§½ä½ï¼Œä¸Šé¢æ’äº†ä¸€æ¡4096MBçš„å†…å­˜ã€‚
 
 --------------java----------------------
-#²é¿´jdk°²×°Ä¿Â¼£¬ÒªÒ»²½Ò»²½²éÕÒÏÂÈ¥£¬ÃüÁîÈçÏÂ£º
+#æŸ¥çœ‹jdkå®‰è£…ç›®å½•ï¼Œè¦ä¸€æ­¥ä¸€æ­¥æŸ¥æ‰¾ä¸‹å»ï¼Œå‘½ä»¤å¦‚ä¸‹ï¼š
 [root@localhost ~]# which java
 /usr/bin/java
 [root@localhost ~]# ls -lrt /usr/bin/java
@@ -333,67 +333,67 @@ lrwxrwxrwx. 1 root root 46 Aug 17 15:12 /etc/alternatives/java -> /usr/lib/jvm/j
 [root@localhost ~]# cd /usr/lib/jvm
 [root@localhost jvm]# ls
 java-1.6.0-openjdk-1.6.0.0.x86_64 java-1.7.0-openjdk-1.7.0.65.x86_64 jre jre-1.6.0 jre-1.6.0-openjdk.x86_64 jre-1.7.0 jre-1.7.0-openjdk.x86_64 jre-openjdk
- 
-
--------------------LinuxÏµÍ³»·¾³±äÁ¿-----------------------------
-/etc/profile£ºÏµÍ³¼¶£¬¸ÃÎÄ¼şÊÇÓÃ»§µÇÂ¼Ê±£¬²Ù×÷ÏµÍ³¶¨ÖÆÓÃ»§»·¾³Ê±Ê¹ÓÃµÄµÚÒ»¸öÎÄ¼ş£¬Ó¦ÓÃÓÚµÇÂ¼µ½ÏµÍ³µÄÃ¿Ò»¸öÓÃ»§¡£¸ÃÎÄ¼şÒ»°ãÊÇµ÷ÓÃ/etc/bash.bashrcÎÄ¼ş
-/etc/environment£ºÏµÍ³¼¶£¬ÔÚµÇÂ¼Ê±²Ù×÷ÏµÍ³Ê¹ÓÃµÄµÚ¶ş¸öÎÄ¼ş,ÏµÍ³ÔÚ¶ÁÈ¡Äã×Ô¼ºµÄprofileÇ°,ÉèÖÃ»·¾³ÎÄ¼şµÄ»·¾³±äÁ¿
-~/.profile£ºÓÃ»§¼¶£¬Ã¿¸öÓÃ»§¶¼¿ÉÊ¹ÓÃ¸ÃÎÄ¼şÊäÈë×¨ÓÃÓÚ×Ô¼ºÊ¹ÓÃµÄshellĞÅÏ¢,µ±ÓÃ»§µÇÂ¼Ê±,¸ÃÎÄ¼ş½ö½öÖ´ĞĞÒ»´Î¡£ÕâÀïÊÇÍÆ¼ö·ÅÖÃ¸öÈËÉèÖÃµÄµØ·½
-~/.bash_profile£ºÓÃ»§¼¶£¬µ±´æÔÚ¸ÃÎÄ¼şÊ¹£¬»áÓÅÏÈ¶ÁÈ¡¸ÃÎÄ¼ş£¬Èô²»´æÔÚÔò¶ÁÈ¡~/.profileÎÄ¼ş¡£µ±~/.profileºÍ~/.bash_profile¹²´æÊ±£¬½¨ÒéĞŞ¸Ä~/.bash_profile
-
-µ±µÇÈëÏµÍ³Ê±ºò»ñµÃÒ»¸öshell½ø³ÌÊ±£¬Æä¶ÁÈ¡»·¾³Éè¶¨µµÓĞÈı²½£º
-1Ê×ÏÈ¶ÁÈëµÄÊÇÈ«¾Ö»·¾³±äÁ¿Éè¶¨µµ/etc/profile£¬È»ºó¸ù¾İÆäÄÚÈİ¶ÁÈ¡¶îÍâµÄÉè¶¨µÄÎÄµµ£¬Èç/etc/profile.dºÍ/etc/inputrc
-2È»ºó¸ù¾İ²»Í¬Ê¹ÓÃÕßÕÊºÅ£¬È¥Æä¼ÒÄ¿Â¼¶ÁÈ¡~/.bash_profile£¬Èç¹ûÕâ¶ÁÈ¡²»ÁË¾Í¶ÁÈ¡~/.bash_login£¬Õâ¸öÒ²¶ÁÈ¡²»ÁË²Å»á¶ÁÈ¡~/.profile£¬ÕâÈı¸öÎÄµµÉè¶¨»ù±¾ÉÏÊÇÒ»ÑùµÄ£¬¶ÁÈ¡ÓĞÓÅÏÈ¹ØÏµ
-3È»ºóÔÚ¸ù¾İÓÃ»§ÕÊºÅ¶ÁÈ¡~/.bashrc
-
-ÖÁÓÚ~/.profileÓë~/.bashrcµÄ²»Çø±ğ
-¶¼¾ßÓĞ¸öĞÔ»¯¶¨ÖÆ¹¦ÄÜ
-~/.profile¿ÉÒÔÉè¶¨±¾ÓÃ»§×¨ÓĞµÄÂ·¾¶£¬»·¾³±äÁ¿£¬µÈ£¬ËüÖ»ÄÜµÇÈëµÄÊ±ºòÖ´ĞĞÒ»´Î
-~/.bashrcÒ²ÊÇÄ³ÓÃ»§×¨ÓĞÉè¶¨ÎÄµµ£¬¿ÉÒÔÉè¶¨Â·¾¶£¬ÃüÁî±ğÃû£¬Ã¿´Îshell scriptµÄÖ´ĞĞ¶¼»áÊ¹ÓÃËüÒ»´Î
 
 
---------------------systemctlÊÇCentOS7µÄ·şÎñ¹ÜÀí¹¤¾ßÖĞÖ÷ÒªµÄ¹¤¾ß£¬ËüÈÚºÏÖ®Ç°serviceºÍchkconfigµÄ¹¦ÄÜÓÚÒ»Ìå-----------
-Æô¶¯Ò»¸ö·şÎñ£ºsystemctl start firewalld.service
-¹Ø±ÕÒ»¸ö·şÎñ£ºsystemctl stop firewalld.service
-ÖØÆôÒ»¸ö·şÎñ£ºsystemctl restart firewalld.service
-ÏÔÊ¾Ò»¸ö·şÎñµÄ×´Ì¬£ºsystemctl status firewalld.service
-ÔÚ¿ª»úÊ±ÆôÓÃÒ»¸ö·şÎñ£ºsystemctl enable firewalld.service
-ÔÚ¿ª»úÊ±½ûÓÃÒ»¸ö·şÎñ£ºsystemctl disable firewalld.service
-²é¿´·şÎñÊÇ·ñ¿ª»úÆô¶¯£ºsystemctl is-enabled firewalld.service
-²é¿´ÒÑÆô¶¯µÄ·şÎñÁĞ±í£ºsystemctl list-unit-files|grep enabled
-²é¿´Æô¶¯Ê§°ÜµÄ·şÎñÁĞ±í£ºsystemctl --failed
+-------------------Linuxç³»ç»Ÿç¯å¢ƒå˜é‡-----------------------------
+/etc/profileï¼šç³»ç»Ÿçº§ï¼Œè¯¥æ–‡ä»¶æ˜¯ç”¨æˆ·ç™»å½•æ—¶ï¼Œæ“ä½œç³»ç»Ÿå®šåˆ¶ç”¨æˆ·ç¯å¢ƒæ—¶ä½¿ç”¨çš„ç¬¬ä¸€ä¸ªæ–‡ä»¶ï¼Œåº”ç”¨äºç™»å½•åˆ°ç³»ç»Ÿçš„æ¯ä¸€ä¸ªç”¨æˆ·ã€‚è¯¥æ–‡ä»¶ä¸€èˆ¬æ˜¯è°ƒç”¨/etc/bash.bashrcæ–‡ä»¶
+/etc/environmentï¼šç³»ç»Ÿçº§ï¼Œåœ¨ç™»å½•æ—¶æ“ä½œç³»ç»Ÿä½¿ç”¨çš„ç¬¬äºŒä¸ªæ–‡ä»¶,ç³»ç»Ÿåœ¨è¯»å–ä½ è‡ªå·±çš„profileå‰,è®¾ç½®ç¯å¢ƒæ–‡ä»¶çš„ç¯å¢ƒå˜é‡
+~/.profileï¼šç”¨æˆ·çº§ï¼Œæ¯ä¸ªç”¨æˆ·éƒ½å¯ä½¿ç”¨è¯¥æ–‡ä»¶è¾“å…¥ä¸“ç”¨äºè‡ªå·±ä½¿ç”¨çš„shellä¿¡æ¯,å½“ç”¨æˆ·ç™»å½•æ—¶,è¯¥æ–‡ä»¶ä»…ä»…æ‰§è¡Œä¸€æ¬¡ã€‚è¿™é‡Œæ˜¯æ¨èæ”¾ç½®ä¸ªäººè®¾ç½®çš„åœ°æ–¹
+~/.bash_profileï¼šç”¨æˆ·çº§ï¼Œå½“å­˜åœ¨è¯¥æ–‡ä»¶ä½¿ï¼Œä¼šä¼˜å…ˆè¯»å–è¯¥æ–‡ä»¶ï¼Œè‹¥ä¸å­˜åœ¨åˆ™è¯»å–~/.profileæ–‡ä»¶ã€‚å½“~/.profileå’Œ~/.bash_profileå…±å­˜æ—¶ï¼Œå»ºè®®ä¿®æ”¹~/.bash_profile
 
----------------------centos7ÖĞ·À»ğÇ½-----------------------
-Æô¶¯£º systemctl start firewalld.service
-²é¿´×´Ì¬£º systemctl status firewalld.service
-¹Ø±Õ£º systemctl stop firewalld.service
-¿ª»ú½ûÓÃ·À»ğÇ½£ºsystemctl disable firewalld.service
-¿ª»úÆôÓÃ·À»ğÇ½£ºsystemctl enable firewalld.service
+å½“ç™»å…¥ç³»ç»Ÿæ—¶å€™è·å¾—ä¸€ä¸ªshellè¿›ç¨‹æ—¶ï¼Œå…¶è¯»å–ç¯å¢ƒè®¾å®šæ¡£æœ‰ä¸‰æ­¥ï¼š
+1é¦–å…ˆè¯»å…¥çš„æ˜¯å…¨å±€ç¯å¢ƒå˜é‡è®¾å®šæ¡£/etc/profileï¼Œç„¶åæ ¹æ®å…¶å†…å®¹è¯»å–é¢å¤–çš„è®¾å®šçš„æ–‡æ¡£ï¼Œå¦‚/etc/profile.då’Œ/etc/inputrc
+2ç„¶åæ ¹æ®ä¸åŒä½¿ç”¨è€…å¸å·ï¼Œå»å…¶å®¶ç›®å½•è¯»å–~/.bash_profileï¼Œå¦‚æœè¿™è¯»å–ä¸äº†å°±è¯»å–~/.bash_loginï¼Œè¿™ä¸ªä¹Ÿè¯»å–ä¸äº†æ‰ä¼šè¯»å–~/.profileï¼Œè¿™ä¸‰ä¸ªæ–‡æ¡£è®¾å®šåŸºæœ¬ä¸Šæ˜¯ä¸€æ ·çš„ï¼Œè¯»å–æœ‰ä¼˜å…ˆå…³ç³»
+3ç„¶ååœ¨æ ¹æ®ç”¨æˆ·å¸å·è¯»å–~/.bashrc
 
-ÅäÖÃfirewalld-cmd
-²é¿´°æ±¾£º firewall-cmd --version
-²é¿´°ïÖú£º firewall-cmd --help
-ÏÔÊ¾×´Ì¬£º firewall-cmd --state
-²é¿´ËùÓĞ´ò¿ªµÄ¶Ë¿Ú£º firewall-cmd --zone=public --list-ports
-¸üĞÂ·À»ğÇ½¹æÔò£º firewall-cmd --reload
-²é¿´ÇøÓòĞÅÏ¢:  firewall-cmd --get-active-zones
-²é¿´Ö¸¶¨½Ó¿ÚËùÊôÇøÓò£º firewall-cmd --get-zone-of-interface=eth0
-¾Ü¾øËùÓĞ°ü£ºfirewall-cmd --panic-on
-È¡Ïû¾Ü¾ø×´Ì¬£º firewall-cmd --panic-off
-²é¿´ÊÇ·ñ¾Ü¾ø£º firewall-cmd --query-panic
+è‡³äº~/.profileä¸~/.bashrcçš„ä¸åŒºåˆ«
+éƒ½å…·æœ‰ä¸ªæ€§åŒ–å®šåˆ¶åŠŸèƒ½
+~/.profileå¯ä»¥è®¾å®šæœ¬ç”¨æˆ·ä¸“æœ‰çš„è·¯å¾„ï¼Œç¯å¢ƒå˜é‡ï¼Œç­‰ï¼Œå®ƒåªèƒ½ç™»å…¥çš„æ—¶å€™æ‰§è¡Œä¸€æ¬¡
+~/.bashrcä¹Ÿæ˜¯æŸç”¨æˆ·ä¸“æœ‰è®¾å®šæ–‡æ¡£ï¼Œå¯ä»¥è®¾å®šè·¯å¾„ï¼Œå‘½ä»¤åˆ«åï¼Œæ¯æ¬¡shell scriptçš„æ‰§è¡Œéƒ½ä¼šä½¿ç”¨å®ƒä¸€æ¬¡
 
-·À»ğÇ½¶Ë¿Ú¹ÜÀí
-Ìí¼Ó£ºfirewall-cmd --zone=public --add-port=80/tcp --permanent    £¨--permanentÓÀ¾ÃÉúĞ§£¬Ã»ÓĞ´Ë²ÎÊıÖØÆôºóÊ§Ğ§£©
-ÖØĞÂÔØÈë£ºfirewall-cmd --reload
-²é¿´£ºfirewall-cmd --zone=public --query-port=80/tcp
-É¾³ı£ºfirewall-cmd --zone=public --remove-port=80/tcp --permanent
-Ö¸¶¨IP·ÃÎÊ¶Ë¿Ú£º
+
+--------------------systemctlæ˜¯CentOS7çš„æœåŠ¡ç®¡ç†å·¥å…·ä¸­ä¸»è¦çš„å·¥å…·ï¼Œå®ƒèåˆä¹‹å‰serviceå’Œchkconfigçš„åŠŸèƒ½äºä¸€ä½“-----------
+å¯åŠ¨ä¸€ä¸ªæœåŠ¡ï¼šsystemctl start firewalld.service
+å…³é—­ä¸€ä¸ªæœåŠ¡ï¼šsystemctl stop firewalld.service
+é‡å¯ä¸€ä¸ªæœåŠ¡ï¼šsystemctl restart firewalld.service
+æ˜¾ç¤ºä¸€ä¸ªæœåŠ¡çš„çŠ¶æ€ï¼šsystemctl status firewalld.service
+åœ¨å¼€æœºæ—¶å¯ç”¨ä¸€ä¸ªæœåŠ¡ï¼šsystemctl enable firewalld.service
+åœ¨å¼€æœºæ—¶ç¦ç”¨ä¸€ä¸ªæœåŠ¡ï¼šsystemctl disable firewalld.service
+æŸ¥çœ‹æœåŠ¡æ˜¯å¦å¼€æœºå¯åŠ¨ï¼šsystemctl is-enabled firewalld.service
+æŸ¥çœ‹å·²å¯åŠ¨çš„æœåŠ¡åˆ—è¡¨ï¼šsystemctl list-unit-files|grep enabled
+æŸ¥çœ‹å¯åŠ¨å¤±è´¥çš„æœåŠ¡åˆ—è¡¨ï¼šsystemctl --failed
+
+---------------------centos7ä¸­é˜²ç«å¢™-----------------------
+å¯åŠ¨ï¼š systemctl start firewalld.service
+æŸ¥çœ‹çŠ¶æ€ï¼š systemctl status firewalld.service
+å…³é—­ï¼š systemctl stop firewalld.service
+å¼€æœºç¦ç”¨é˜²ç«å¢™ï¼šsystemctl disable firewalld.service
+å¼€æœºå¯ç”¨é˜²ç«å¢™ï¼šsystemctl enable firewalld.service
+
+é…ç½®firewalld-cmd
+æŸ¥çœ‹ç‰ˆæœ¬ï¼š firewall-cmd --version
+æŸ¥çœ‹å¸®åŠ©ï¼š firewall-cmd --help
+æ˜¾ç¤ºçŠ¶æ€ï¼š firewall-cmd --state
+æŸ¥çœ‹æ‰€æœ‰æ‰“å¼€çš„ç«¯å£ï¼š firewall-cmd --zone=public --list-ports
+æ›´æ–°é˜²ç«å¢™è§„åˆ™ï¼š firewall-cmd --reload
+æŸ¥çœ‹åŒºåŸŸä¿¡æ¯:  firewall-cmd --get-active-zones
+æŸ¥çœ‹æŒ‡å®šæ¥å£æ‰€å±åŒºåŸŸï¼š firewall-cmd --get-zone-of-interface=eth0
+æ‹’ç»æ‰€æœ‰åŒ…ï¼šfirewall-cmd --panic-on
+å–æ¶ˆæ‹’ç»çŠ¶æ€ï¼š firewall-cmd --panic-off
+æŸ¥çœ‹æ˜¯å¦æ‹’ç»ï¼š firewall-cmd --query-panic
+
+é˜²ç«å¢™ç«¯å£ç®¡ç†
+æ·»åŠ ï¼šfirewall-cmd --zone=public --add-port=80/tcp --permanent    ï¼ˆ--permanentæ°¸ä¹…ç”Ÿæ•ˆï¼Œæ²¡æœ‰æ­¤å‚æ•°é‡å¯åå¤±æ•ˆï¼‰
+é‡æ–°è½½å…¥ï¼šfirewall-cmd --reload
+æŸ¥çœ‹ï¼šfirewall-cmd --zone=public --query-port=80/tcp
+åˆ é™¤ï¼šfirewall-cmd --zone=public --remove-port=80/tcp --permanent
+æŒ‡å®šIPè®¿é—®ç«¯å£ï¼š
 firewall-cmd --permanent --add-rich-rule 'rule family=ipv4 source address=192.168.0.1/2 port port=80 protocol=tcp accept'
 firewall-cmd --reload
-É¾³ı¹æÔò£º
+åˆ é™¤è§„åˆ™ï¼š
 firewall-cmd --permanent --remove-rich-rule 'rule family=ipv4 source address=192.168.0.1/2 port port=80 protocol=tcp accept'
 firewall-cmd --reload
-²é¿´ÅäÖÃ½á¹û£ºfirewall-cmd --list-all
+æŸ¥çœ‹é…ç½®ç»“æœï¼šfirewall-cmd --list-all
 
 
 
