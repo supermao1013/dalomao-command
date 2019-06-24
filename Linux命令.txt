@@ -19,6 +19,12 @@ cat -n test.log  查看文件并显示行数
 cat test.log|wc -l  查看文件总行数
 cat test.log|grep '123456' --col  查看文件，并过滤条件，--col表示高亮显示
 
+----------域名解析相关-----------------------------
+cat /etc/resolv.conf  查看dns服务器
+nslookup  dns域名解析结果
+dig www.taobao.com  dns解析过程
+
+
 ----------ls ll 查看文件命令----------------
 ls -lh：以MB单位查看文件列表
 ls -lrt：按文件修改时间升序查看文件列表
