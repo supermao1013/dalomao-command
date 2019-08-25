@@ -19,7 +19,6 @@ tasklist /v | findstr java  //查看java进程ID
 【笔记本开启小键盘】
 在"运行"中输入：osk，然后"选项"--"小键盘"
 
-测试在测试
 
 
 
