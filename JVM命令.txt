@@ -1,0 +1,70 @@
+---------------------- JVM启动项配置 --------------------------------------
+
+-Xms2048M				堆容量初始值（根据机器内存大小调整）
+-Xmx2048M				堆容量最大值（最好跟-Xms保持一致，避免内存伸缩带来的性能和其他问题）
+-Xmn1024M				年轻代容量（eden + 2survivor），官方推荐配置为整个堆的3/8
+-Xss256K					线程堆栈空间大小
+-XX:+UserParNewGC			新生代使用ParNew收集器
+-XX:+UserConcMarkSweepGC		老年代使用CMS收集器
+-XX:+PrintGCDetails			打印gc日志详细信息
+-XX:+PrintGCDateStamps			打印gc发生时相对jvm启动的时间
+-Xloggc					设置gc日志的生成位置
+-XX:+HeapDumpOutOfMemoryError		当出现OOM时，打印堆快照
+
+
+
+------------------------------------------宕机现场保留（内存问题排查）--------------------------------------------
+
+命令：ps -ef | grep java
+查看Java线程并拿到pid
+
+命令：jstat -gcutil pid 1000
+每秒钟打印堆信息
+
+命令：jstack pid >> jstack.ss
+生成Java堆栈快照（内存溢出时执行）
+
+命令：jmap -dump:format=b,file=fileName pid
+堆内存dump，可使用MAT客户端进行分析（内存溢出时执行）
+
+命令：jmap -histo:live pid | more
+查看占用堆内存的对象，通常配合jmap -histo pid | more使用，先使用jmap -histo（不会触发full gc），
+再使用jmap -histo:live（会触发full gc），对比两次结果，可以看出主要被回收掉的对象
+
+命令：top -Hp pid
+查看每个线程的资源占用情况
+按P：根据占用CPU大小排序，按M：根据占用内存大小排序
+
+------------------------------------------ 查看CPU过高步骤（JAVA应用） --------------------------------------------
+1.jps
+查看所有java进程PID
+
+2.top -p [PID]
+查看该进程CPU占用情况
+
+3.ps -mp [PID] -o THREAD,tid,time 或 top -p [PID] -H
+显示该应用所有线程的信息（含TID、CPU占用信息）
+
+4.printf "%x" [线程ID-TID]
+把线程ID转换为16进制
+
+5.jstack [PID] | grep [TID的16进制] -A 10 -B 10
+打印堆栈信息的前后10行信息，就知道那一块代码问题
+
+
+------------------------------------------ 查看内存过高步骤（JAVA应用） --------------------------------------------
+1.jps
+查看所有java进程PID
+
+2.jmap -histo:live [PID] | head -n 100
+查看该进程排名在前100内存占用的对象
+
+3.jmap -heap [PID]
+查看内存情况
+
+
+
+
+
+
+

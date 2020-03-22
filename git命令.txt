@@ -1,5 +1,8 @@
 git官网：https://git-scm.com/
 
+# 关联远程另一个分支
+git remote add upstream git@47.107.249.34:yidao/xxxx.git
+
 1.配置全局账号
 git config --global user.name "你的用户名"
 git config --global user.email "你的邮箱"
