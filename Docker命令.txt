@@ -1,0 +1,56 @@
+----------------------- CentOS7下Docker安装 --------------------------------------
+官方安装手册：https://docs.docker.com/install/linux/docker-ce/centos/
+1.卸载旧版本
+sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-engine
+
+2.安装依赖工具包
+sudo yum install -y yum-utils \
+  device-mapper-persistent-data \
+  lvm2
+  
+3.加入源信息 
+sudo yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+
+4.安装docker（默认安装最新）
+sudo yum install docker-ce docker-ce-cli containerd.io
+
+5.运行
+systemctl start docker
+
+6.验证
+查看版本：docker --version
+测试运行hello-world：docker run hello-world
+
+7.开机自启动
+systemctl enable docker.service
+systemctl enable docker.socket
+查看是否设置成功：systemctl list-unit-files |grep docker
+
+8.镜像加速
+登录阿里云控制台：https://dev.aliyun.com/search.html
+路径：管理中心–>容器镜像服务–>镜像中心–>镜像加速器
+
+9.卸载docker
+yum remove docker-ce
+rm -rf /var/lib/docker
+
+----------------------- Docker命令 --------------------------------------
+
+
+
+
+
+
+
+
+
+

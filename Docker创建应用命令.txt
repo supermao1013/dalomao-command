@@ -1,0 +1,79 @@
+---------------------------- 【nexus3 指定版本】 --------------------------------------
+mkdir -p /usr/local/docker/nexus3/data && chown -R 200 /usr/local/docker/nexus3/data
+docker run -tid \
+-p 8081:8081 \
+--name nexus3 \
+--restart always \
+-e NEXUS_CONTEXT=nexus \
+-v /usr/local/docker/nexus3/data:/nexus-data \
+sonatype/nexus3:3.16.0
+
+访问地址：http://localhost:8081/nexus
+默认账号密码：admin/admin123
+
+
+
+---------------------------- 【mysql5.7】 --------------------------------------
+mkdir -p /usr/local/docker/mysql/data && chown -R 200 /usr/local/docker/mysql/data
+mkdir -p /usr/local/docker/mysql/conf && chown -R 200 /usr/local/docker/mysql/conf
+
+docker run -tid \
+--name mysql \
+--privileged=true \
+--restart always \
+-v /usr/local/docker/mysql/data:/var/lib/mysql \
+-v /usr/local/docker/mysql/conf:/etc/mysql/conf.d \
+-e TZ=Asia/Shanghai \
+-p 3306:3306 \
+-e MYSQL_ROOT_PASSWORD=123456 \
+-d mysql:5.7 \
+--character-set-server=utf8mb4 \
+--collation-server=utf8mb4_general_ci
+
+【my.cnf配置文件如下（放到/usr/local/docker/mysql/conf路径下）】：
+[mysqld]
+user=mysql
+character-set-server=utf8mb4
+default_authentication_plugin=mysql_native_password
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+
+#开启慢查询，超过1秒则为慢查询
+slow_query_log=1
+long_query_time=2
+
+#表名不区分大小写
+lower_case_table_names=1
+
+[client]
+default-character-set=utf8mb4
+
+[mysql]
+default-character-set=utf8mb4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
