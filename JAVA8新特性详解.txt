@@ -260,5 +260,154 @@ System.out.println(optional.get());//hello
 System.out.println(optional.orElse("false"));
 optional.ifPresent((s)-> System.out.println(s.charAt(0)));//h
 
+5.CompletableFuture
+默认采用ForkJoinPool.commonPool()作为线程池，可以自定义线程池
+(1)runAsync：创建一个简单的没有返回值的Future
+	CompletableFuture.runAsync(() -> run(10, 5, 1), threadPool);
+(2)supplyAsync：创建一个有返回值的CompleteFuture
+	CompletableFuture<Integer> f = CompletableFuture.supplyAsync(() -> run(10, 5, 1), threadPool);
+	f.get()//阻塞
+(3)thenApply, thenAccept, thenRun：监听future返回
+	thenApply()：监听future返回,调用Future方法对返回值进行修改和操作,这个操作有返回值,比如转换类型
+	thenAccept()：监听future返回,调用Consumer处理返回值,处理的结果没有返回值,比如打印结果,这样的话最终的CompletableFuture也拿不到返回值
+	thenRun()：监听future返回,然后自己自定义处理
+		CompletableFuture<Void> f = CompletableFuture.supplyAsync(() -> run(10, 5, 1), threadPool) // 2，并往下传递
+				.thenApply(i ->String.valueOf(i).concat("abc")) // 2abc，并往下传递
+				.thenAccept(s ->log.info("thenAccept接收的结果是:{}", s))// 2abc，不会往下传递
+				.thenRun(() ->log.info("在业务后处理其他的流程"))
+				.thenAccept(s -> log.info("全部结束"));
+		f.get();//阻塞
+(4)thenApplyAsync, thenAcceptAsync, thenRunAsync：类似上面3个方法，但是这里的每个方法都是异步的，另外启动一个线程执行
+虽然3个方法都是另起一个线程执行,但是因为他们都需要拿到上一个方法的值,所以这里异步开启线程与同步耗时是一样的
+(5)get、getNow、join
+get：阻塞等待返回结果
+getNow：马上获取一个结果，如果结果已经计算完则返回结果或者抛出异常，否则返回给定的valueIfAbsent值
+join：join()与get()区别在于join()返回计算的结果或者抛出一个unchecked异常(CompletionException)，而get()返回一个具体的异常
+(6)either：当任意一个CompletableFuture执行完后就会执行计算，计算的结果相同
+	acceptEither(CompletionStage<? extends T> other, Consumer<? super T> action)：当任意一个CompletableFuture完成的时候，action这个消费者就会被执行。
+	acceptEitherAsync(CompletionStage<? extends T> other, Consumer<? super T> action)：当任意一个CompletableFuture完成的时候，action这个消费者就会被执行。使用ForkJoinPool
+	acceptEitherAsync(CompletionStage<? extends T> other, Consumer<? super T> action, Executor executor)：当任意一个CompletableFuture完成的时候，action这个消费者就会被执行。使用指定的线程池
+	applyToEither 跟 acceptEither 类似
+		CompletableFuture<Void> future =  future1.acceptEither(future2,str->System.out.println("The future is "+str));
+		CompletableFuture<String> future =  future1.applyToEither(future2,str->"The future is "+str);
+(6)allOf(静态方法)：在所有Future对象完成后结束，并返回一个future
+	CompletableFuture<String> future1 = CompletableFuture.supplyAsync(() -> "tony");
+	CompletableFuture<String> future2 = CompletableFuture.supplyAsync(() -> "cafei");
+	CompletableFuture<String> future3 = CompletableFuture.supplyAsync(() -> "aaron");
+	CompletableFuture.allOf(future1, future2, future3).thenApply(v ->
+				Stream.of(future1, future2, future3)
+				.map(CompletableFuture::join).collect(Collectors.joining(" ")))
+			.thenAccept(System.out::print);
+(7)anyOf(静态方法)：在任何一个Future对象结束后结束，并返回一个future
+	CompletableFuture<Object> future =  CompletableFuture.anyOf(future1,future2,future3);
+(8)【异常处理】：CompletableFuture在运行时如果遇到异常，可以使用get()并抛出异常进行处理，但这并不是一个最好的方法
+	a.exceptionally方式
+		CompletableFuture.supplyAsync(() -> "hello world")
+		.thenApply(s -> {
+			s = null;
+			int length = s.length();
+			return length;
+		}).thenAccept(i -> System.out.println(i))
+		.exceptionally(t -> {
+			System.out.println("Unexpected error:" + t);
+			return null;
+		});
+	b.whenComplete方式：可以捕获任意阶段的异常。如果没有异常的话，就执行action
+		CompletableFuture.supplyAsync(() -> "hello world")
+		.thenApply(s -> {
+			s = null;
+			int length = s.length();
+			return length;
+		}).thenAccept(i -> System.out.println(i))
+		.whenComplete((result, throwable) -> {
+
+			if (throwable != null) {
+			   System.out.println("Unexpected error:"+throwable);
+			} else {
+				System.out.println(result);
+			}
+
+		});	
+(5)springboot中配合@Async使用
+参考链接：https://spring.io/guides/gs/async-method/
+a.启动类加上注解：@EnableAsync
+b.自定义Executor(可选)
+	@SpringBootApplication
+	@EnableAsync
+	public class Application {
+	 
+		public static void main(String[] args) {
+			// close the application context to shut down the custom ExecutorService
+			SpringApplication.run(Application.class, args).close();
+		}
+	 
+		@Bean
+		public Executor asyncExecutor() {
+			ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+			executor.setCorePoolSize(2);
+			executor.setMaxPoolSize(2);
+			executor.setQueueCapacity(500);
+			executor.setThreadNamePrefix("GithubLookup-");
+			executor.initialize();
+			return executor;
+		}
+	}
+	
+	// 异步方法
+	@Service
+	public class GitHubLookupService {
+	 
+		private static final Logger logger = LoggerFactory.getLogger(GitHubLookupService.class);
+	 
+		private final RestTemplate restTemplate;
+	 
+		public GitHubLookupService(RestTemplateBuilder restTemplateBuilder) {
+			this.restTemplate = restTemplateBuilder.build();
+		}
+	 
+		@Async
+		public CompletableFuture<User> findUser(String user) throws InterruptedException {
+			logger.info("Looking up " + user);
+			String url = String.format("https://api.github.com/users/%s", user);
+			User results = restTemplate.getForObject(url, User.class);
+			// Artificial delay of 1s for demonstration purposes
+			Thread.sleep(1000L);
+			return CompletableFuture.completedFuture(results);
+		}
+	}
+	
+	// 调用方
+	public void run(String... args) throws Exception {
+        // Start the clock
+        long start = System.currentTimeMillis();
+ 
+        // Kick of multiple, asynchronous lookups
+        CompletableFuture<User> page1 = gitHubLookupService.findUser("PivotalSoftware");
+        CompletableFuture<User> page2 = gitHubLookupService.findUser("CloudFoundry");
+        CompletableFuture<User> page3 = gitHubLookupService.findUser("Spring-Projects");
+ 
+        // Wait until they are all done
+        CompletableFuture.allOf(page1,page2,page3).join();
+ 
+        // Print results, including elapsed time
+        logger.info("Elapsed time: " + (System.currentTimeMillis() - start));
+        logger.info("--> " + page1.get());
+        logger.info("--> " + page2.get());
+        logger.info("--> " + page3.get());
+	}
+
+ 
+
+	
+
+
+
+
+
+
+
+
+
+
 
 	
