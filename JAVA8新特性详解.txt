@@ -1,0 +1,264 @@
+1.接口的默认方法
+允许我们给接口添加一个非抽象的方法实现，只需要使用 default关键字即可，这个特征又叫做扩展方法  
+interface Formula {
+	# 子类只要实现该方法即可
+	double calculate(int a);
+	
+	# 扩展的默认方法，子类可以直接使用
+	default double sqrt(int a) {
+		return Math.sqrt(a);
+	}
+}
+
+
+2.Lambda表达式
+基本语法:
+	(parameters) ->{ statements };
+	当参数【只有一个且不声明类型时可以省略()】
+	当后边【方法体只有一条语句时可以省略{}】
+		当该语句为返回结果语句时，不可以加return关键字，除非不省略{}
+	参数类型可以省略,但是【必须全部省略或全部保留】
+	当引用的类方法或对象方法支持泛型时，可以在引用时加上加上泛型约束
+案例：
+	List<String> nameList = Arrays.asList("peter", "anna", "mike", "xenia");
+	List<Person> personList = new ArrayList<>();
+	Map<String,String> nameMap = new HashMap<>();
+	(1)排序sorted
+		Collections.sort(nameList, (String a, String b) -> {return b.compareTo(a);})：原始写法
+		Collections.sort(nameList, (String a, String b) -> b.compareTo(a))：对于函数体只有一行代码的，你可以去掉大括号{}以及return关键字
+		Collections.sort(nameList, (a, b) -> b.compareTo(a))：Java编译器可以自动推导出参数类型
+		nameList
+		nameList.stream().sorted(Comparator.comparing(String::trim))：【推荐】
+		personList.stream().sorted(Comparator.comparing(Person::getUserName))：【推荐】
+	(2)遍历forEach
+		nameList.forEach(s -> System.out.println(s));
+		nameMap.forEach((key,value)-> System.out.println(key + ":" + value));
+	(3)截断limit
+		nameList.stream().limit(3)：输出结合中前三个元素
+	(4)跳过skip(与limit互斥)
+		nameList.stream().skip(3)：跳过前三个元素，从第四个开始输出
+	(5)去重distinct(必须重写对应泛型的hashCode()和equals()方法)
+		nameList.stream().distinct();
+	(6)过滤filter(满足条件的留下)
+		nameList.stream().filter(p -> p.contains("z"));
+		nameMap.entrySet().stream().filter(m -> "zhangsan".equals(m.getKey())).map(m -> m.getValue());
+	(7)统计(max,min,um,avg,count)	
+		IntSummaryStatistics summary = personList.stream().mapToInt(p -> p.getAge()).summaryStatistics();
+        System.out.println("总共人数：" + summary.getCount());
+        System.out.println("平均年龄：" + summary.getAverage());
+        System.out.println("最大年龄：" + summary.getMax());
+        System.out.println("最小年龄：" + summary.getMin());
+        System.out.println("年龄之和：" + summary.getSum());
+	(8)map：接收一个方法作为参数，该函数会被应用到每个元素上，并将其映射成一个新的元素
+		List<Integer> ages = personList.stream().map(user -> user.getAge()).collect(Collectors.toList());
+		List<String> collectList = nameList.stream().map(s -> s.toUpperCase()).collect(Collectors.toList());
+        collectList.forEach(s -> System.out.println(s));// 将原有元素转成大写后新增到新的集合
+	(9)多面手reduce(求最大、最小、总和)	
+		// 求年龄最大
+		Optional<Person> reduce = personList.stream().reduce((s1, s2) -> s1.getAge() > s2.getAge() ? s1 : s2);
+		Person p = reduce.get();
+		Optional<Person> max = personList.stream().max(Comparator.comparing(Person::getAge));
+		Person p = max.get();
+		// 求所有人的年龄和
+		Integer reduce = personList.stream().reduce(0, // 该参数为初始值
+						(integer, user) -> integer + user.getAge(), // 该参数为累加器，新元素如何累加
+						(integer, integer2) -> integer + integer2);// 多个部分如何合并
+	(10)使用collect()做字符串join
+		Stream<String> stream = Stream.of("张三","李四","王五","赵六");
+		String s = stream.collect(Collectors.joining()); // 张三李四王五赵六
+		String s = stream.collect(Collectors.joining("-")); // 张三-李四-王五-赵六
+		String s = stream.collect(Collectors.joining("-", "(", ")")); // (张三-李四-王五-赵六)
+	(11)List转为Map
+		Map<String, String> = personList.stream().collect(Collectors.toMap((p -> p.getUserName()), (p -> p.getSex())));
+	(12)详细例子
+		public class EmployeeTest {
+  
+			public static List<Employee> generateData() {
+				return Arrays.asList(new Employee("Matt", 5000, "New York"),
+						new Employee("Steve", 6000, "London"),
+						new Employee("Carrie", 10000, "New York"),
+						new Employee("Peter", 7000, "New York"),
+						new Employee("Alec", 6000, "London"),
+						new Employee("Sarah", 8000, "London"),
+						new Employee("Rebecca", 4000, "New York"),
+						new Employee("Pat", 20000, "New York"),
+						new Employee("Tammy", 9000, "New York"),
+						new Employee("Fred", 15000, "Tokyo"));
+			}
+		  
+			public static Map<String, Integer> generateMapData() {
+				Map<String, Integer> items = Maps.newHashMap();
+				items.put("A", 10);
+				items.put("B", 20);
+				items.put("C", 30);
+				items.put("D", 40);
+				items.put("E", 50);
+				items.put("F", 60);
+		  
+				return items;
+			}
+		  
+		  
+			@Test
+			public void testEmployee() {
+				List<Employee> results = generateData();
+		  
+				//打印出名字是Steve的员工信息
+				results.forEach(c -> {
+					if (c.getName().equals("Steve")) {
+						System.out.println(c);
+					}
+				});
+		  
+				System.out.println("---------");
+		  
+				//找出年薪超过6000的员工
+				results.stream().filter(c -> c.getSalary() >= 60000).forEach(c -> System.out.println(c));
+		  
+				System.out.println("--->>>>>>----");
+		  
+				//java8遍历map
+				Map<String, Integer> map_ = generateMapData();
+				map_.forEach((key, value) -> System.out.println("key:" + key + "," + "value:" + value));
+		  
+				System.out.println("---->>>>分组>>>-----");
+		  
+				//java8 分组操作
+				Map<String, List<Employee>> groupMap = results.stream().collect(Collectors.groupingBy(c -> c.getOffice()));
+				System.out.println(groupMap);
+		  
+				System.out.println("---->>>>List转化为Map>>>----");
+				//List转化Map
+				Map<String, Object> map = results.stream().collect(Collectors.toMap(Employee::getName, Employee::getOffice));
+				map.forEach((key, value) -> System.out.println("key:" + key + "," + "value:" + value));
+		  
+				System.out.println("---->>>>>>>----");
+				Map<Integer, Employee> employeeMap = results.stream().collect(Collectors.toMap((key -> key.getSalary()), (value -> value)));
+				employeeMap.forEach((key, value) -> System.out.println(key + "," + value));
+		  
+				System.out.println("---->>遍历map>>>----");
+				//打印出值大于30的map
+				Map<String, Integer> resultMap = map_.entrySet().stream().filter(c -> c.getValue() > 30).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+				resultMap.forEach((key, value) -> System.out.println(key + "=" + value));
+		  
+				System.out.println(">>>>>>>>>>>>>>>");
+				//打印key=D的map
+				Map<String, Integer> mapResults = map_.entrySet().stream().filter(c -> c.getKey().equals("D")).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+				mapResults.forEach((key, value) -> System.out.println(key + ">>>>" + value));
+		  
+				System.out.println(">>>>>>>Optional>>>>>>>");
+				Optional<String> optional = Optional.of("hello");
+				System.out.println(optional.isPresent());		  
+			}
+		  
+			@Test
+			public void testEmployeeExample() {
+				//anyMatch
+				List<Employee> employeeList = generateData();
+				boolean isMatch = employeeList.stream().anyMatch(employee -> employee.getOffice().equals("London"));
+				System.out.println(isMatch);
+		  
+				//allMatch
+				boolean matched = employeeList.stream().allMatch(employee -> employee.getOffice().equals("London"));
+				System.out.println(matched);
+		  
+				//找出工资最高的
+				Optional<Employee> employeeOptional = employeeList.stream().max((e1,e2)->Integer.compare(e1.getSalary(),e2.getSalary()));
+				System.out.println(employeeOptional);
+		  
+				//找出工资最少的
+				Optional<Employee> employee = employeeList.stream().min((e1,e2)->Integer.compare(e1.getSalary(),e2.getSalary()));
+				System.out.println(employee);
+		  
+				//返回姓名列表
+				List<String> names = employeeList.stream().map(c->c.getName()).collect(Collectors.toList());
+				System.out.println(names);
+		  
+				System.out.println(">>>>>>>>>>>");
+				//List转化Map
+				Map<String,Employee> employeeMap = employeeList.stream().collect(Collectors.toMap((key->key.getName()),(value->value)));
+				employeeMap.forEach((key,value)-> System.out.println(key + "=" + value));
+		  
+				//统计办公室是New York的个数
+				long officeCount =  employeeList.stream().filter(c->c.getOffice().equals("New York")).count();
+				System.out.println(officeCount);
+		  
+				long salaryCount = employeeList.stream().filter(c->c.getSalary()>60000).count();
+				System.out.println(salaryCount);
+		  
+				//List转化为Set
+				Set<String> officeSet = employeeList.stream().map(c->c.getOffice()).distinct().collect(Collectors.toSet());
+				System.out.println(officeSet);
+		  
+				Set<Integer> salarySet = employeeList.stream().map(c->c.getSalary()).distinct().collect(Collectors.toSet());
+				System.out.println(salarySet);
+		  
+				//查找办公室地点是New York的员工
+				Optional<Employee> optionals = employeeList.stream().filter(c->c.getOffice().equals("New York")).findAny();
+				System.out.println(optionals);
+		  
+				System.out.println(">>>>>工资降序排序>>>>>");
+				//按照工资的降序来列出员工信息
+				List<Employee> sortSalaryEmployeeList = employeeList.stream().sorted((e1,e2)->Integer.compare(e2.getSalary(),e1.getSalary())).collect(Collectors.toList());
+				System.out.println(sortSalaryEmployeeList);
+		  
+				System.out.println(">>>>>姓名升序排序>>>>>");
+				List<Employee> sortNameEmployeeList = employeeList.stream().sorted((e1,e2)->e1.getName().compareTo(e2.getName())).collect(Collectors.toList());
+				System.out.println(sortNameEmployeeList);
+		  
+				System.out.println(">>>>获取工资最高的前2条员工信息");
+				List<Employee> dispaly2EmployeeList = employeeList.stream().sorted((e1,e2)->Integer.compare(e2.getSalary(),e1.getSalary())).limit(2).collect(Collectors.toList());
+				System.out.println(dispaly2EmployeeList);
+		  
+				System.out.println(">>>>获取平均工资");
+				OptionalDouble averageSalary = employeeList.stream().mapToInt(c->c.getSalary()).average();
+				System.out.println(averageSalary);
+		  
+				System.out.println(">>>>获取工作地点的平均工资");
+				OptionalDouble optionalDouble = employeeList.stream().filter(c->c.getOffice().equals("New York")).mapToInt(c->c.getSalary()).average();
+				System.out.println(optionalDouble);
+		  
+				System.out.println(">>>>>>Java8 Optional用法>>>>>>");
+				Optional<String> stringOptional = Optional.of("test");
+				System.out.println(stringOptional.get());
+		  
+				Optional<String> isOptional = Optional.ofNullable("hello");
+				System.out.println(isOptional.isPresent());
+				System.out.println(isOptional.get());
+				System.out.println(isOptional.orElse("0"));
+		  
+				System.out.println(">>>>>>>>>>>>");
+				//Optional<String> optionalVal = Optional.of(null);
+				// System.out.println(optionalVal);
+				Optional<String> optional = Optional.ofNullable("optional");
+				System.out.println(optional);
+				System.out.println(optional.isPresent());
+				System.out.println(optional.get());
+				System.out.println(optional.orElse("haha"));
+				System.out.println(">>>>>>>>>>>>");
+		  
+				Optional<Employee> employeeOptional_ = employeeList.stream().filter(c->c.getOffice().equals("New York")).findFirst();
+				System.out.println(employeeOptional_);		  
+			}
+		
+3.函数式接口
+函数式接口，有且仅有一个抽象方法，Object的public方法除外
+具体就是说，注解在Inteface上，且interface里只能有一个抽象方法，可以有default方法
+简单用例：
+	@FunctionalInterface
+	interface Converter<F, T> {
+		T convert(F from);
+	}
+	Converter<String, Integer> converter = (from) -> Integer.valueOf(from);
+	Integer converted = converter.convert("123");
+	System.out.println(converted);    // 123
+
+4.Optional
+Optional<String> optional = Optional.of("hello");
+System.out.println(optional.isPresent());//true
+System.out.println(optional.get());//hello
+System.out.println(optional.orElse("false"));
+optional.ifPresent((s)-> System.out.println(s.charAt(0)));//h
+
+
+	
