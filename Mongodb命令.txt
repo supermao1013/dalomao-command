@@ -66,6 +66,7 @@ $and  所有条件都必须匹配
 $exists  判断元素是否存在
 $regex  正则表达式匹配
 
+db.users.find().count() #查询文档总的条数
 db.users.drop()  #删除users集合
 db.users.find()  #查询users集合下所有文档
 db.users.find().pretty()  #pretty表示格式化
@@ -83,6 +84,16 @@ db.users.find({"lenght":{"$not":{"$gte":1.77}}}).pretty()  #将lenght大于等�
 
 db.users.find({"lenght":{"$exists":false}}).pretty()  #查询集合中没有lenght字段的文档
 db.users.find({"lenght":{"$exists":true}}).pretty()  #查询集合中有lenght字段的文档
+
+根据主键ID查询：db.users.find({"_id":ObjectId("60deaddbc4df0754f643a0c9")})
+根据时间范围查询：db.users.find({"creationDate":{$gte:ISODate("2021-07-02 06:10:35"), $lte:ISODate("2021-07-02 06:10:36")}})
+根据字段和日期范围查询并按时间降序序：
+db.users.aggregate([
+{"$match": {"interfaceMethodName":"getUser", "creationDate":{$gte:ISODate("2021-07-26 08:00:30"), $lte:ISODate("2021-07-27 08:32:59")}}},
+{"$sort":{"creationDate":-1}}
+])
+查询某接口最新的一条数据：
+db.users.aggregate([{"$match":{"interfaceMethodName":"getUser"}},{$sort:{"creationDate":-1}},{"$limit":1}])
 
 排序：
 db.users.find().sort({"lenght":-1})  #按lenght降序
@@ -178,6 +189,7 @@ db.ordersTest.aggregate([
 ------删除------
 db.users.deleteMany({"name":"zhangsan"})  #删除名称为张三的数据
 db.users.deleteMany({"$and":[{"age":{"$gt":8}}, {"age":{"$lt":35}}]})  #删除 8<=age<=35 的数据
+db.users.deleteMany({"creationDate":{$lte:ISODate("2021-07-03 00:00:00")}})  #根据时间范围删除
 
 ------更新------
 【注意】mongodb的更新都是原子的，mongodb所有的写操作都是有锁的。
@@ -314,6 +326,8 @@ name  string  索引名字
 sparse  boolean  是否为稀疏索引,索引仅引用具有指定字段的文档。
 
 1：升序  -1：降序
+
+查询索引：db.users.getIndexes()
 
 创建索引
 	单键唯一索引:db.users.createIndex({username :1},{unique:true});
