@@ -1,17 +1,34 @@
------------------------单机安装-----------------------------
-这里安装CentOS的3.5.5版本
+官方文档观看顺序：
+https://neo4j.com/docs/getting-started/current/get-started-with-neo4j/
 
-1.官网下载tar.gz安装包，解压即可
+----------------------  Windows安装教程 ----------------------------
+方法1：
+	1.将附件解压到目录，如：D:\Program Files\neo4j-community-4.1.1
+	2.创建系统环境变量NEO4J_HOME，并把主目录（D:\Program Files\neo4j-community-4.1.1）设置为变量值
+	3.再在path中添加%NEO4J_HOME%\bin
+	4.启动，打开PowerShell，输入命令：neo4j console
 
-2.修改conf/neo4j.conf文件，开启允许远程客户端连接
-dbms.connectors.default_listen_address=0.0.0.0
+方法2：把NEO4J安装为服务
+	安装和卸载：
+		neo4j install-service
+		neo4j uninstall-service
+	启动服务，停止服务，重启服务和查询服务的状态：
+		neo4j start
+		neo4j stop
+		neo4j restart
+		neo4j status
+		如果，neo4j stop不能停止neo4j，用kill -s 9 强制杀掉进程
 
-3.启动neo4j：./bin/neo4j start
+访问：
+	浏览器中打开：http://localhost:7474
+	初始账号密码：neo4j
 
-4.启动cypher-shell工具：./bin/cypher-shell
-	初始登陆账号密码：neo4j/neo4j，需要修改
-	修改密码命令：CALL dbms.changePassword('your password');
-	修改密码成功后，:exit 命令退出cypher，然后再次用新密码运行cypher
+切换数据库：
+	每次启动neo4j，它只能读取一个数据库，默认情况下的Graph.db数据库。
+	使用Neo3.x创建新数据库而不删除现有数据库，所以只需在$NEO4J_HOME\conf的目录编辑neo4j.conf。
+	搜寻dbms.active_database=，其默认值应为graph.db。用其他名称替换它，然后再次启动neo4j。现在，将在该目录名下创建一个新数据库。
+	若要切换回以前的db，请重复这些步骤，只需将新值替换为graph.db在配置文件中。
+	注意：如果在neo4j启动的时候修改了配置文件，则需要重新启动一次，浏览器页面才会更新
 
 --------------------------系统命令-----------------------------
 ./bin/neo4j start	启动
